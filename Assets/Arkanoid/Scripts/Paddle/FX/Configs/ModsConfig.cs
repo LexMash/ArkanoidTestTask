@@ -6,16 +6,16 @@ using UnityEngine;
 namespace Arkanoid.Paddle.FX.Configs
 {
     [CreateAssetMenu(fileName = "New FxConfig", menuName = "Arkanoid/FX/FxConfig")]
-    public class FxConfig : ScriptableObject
+    public class ModsConfig : ScriptableObject
     {
-        [field: SerializeField] public List<FxData> FXs { get; private set; }
+        [field: SerializeField] public List<ModificatorData> FXs { get; private set; }
     }
 
     [Serializable]
-    public class FxData
+    public class ModificatorData
     {
-        [field: SerializeField] public FxType Type { get; private set; }
-        [field: SerializeField] public List<FxType> СancelingEffectType { get; private set; }
+        [field: SerializeField] public ModType Type { get; private set; }
+        [field: SerializeField] public List<ModType> ConflictModType { get; private set; }
         [field: SerializeField] public float Time { get; private set; }
     }
 }

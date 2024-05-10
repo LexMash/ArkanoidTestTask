@@ -7,5 +7,8 @@ namespace Arkanoid.Input
     {
         event Action ActionPerformed;
         event Action<Vector3> MovePerformed;
+
+        void Enable();
+        void Disable();
     }
 }

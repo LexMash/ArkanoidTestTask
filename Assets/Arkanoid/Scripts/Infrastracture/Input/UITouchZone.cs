@@ -26,6 +26,16 @@ public class UITouchZone : MonoBehaviour, IInput, IPointerClickHandler, IDragHan
         Move(eventData);
     }
 
+    public void Enable()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Disable()
+    {
+        gameObject.SetActive(false);
+    }
+
     private void Move(PointerEventData eventData)
     {
         RectTransformUtility.ScreenPointToWorldPointInRectangle(_rectTransform, eventData.position, _camera, out Vector3 worldPoint);

@@ -10,12 +10,15 @@ namespace Arkanoid.Bricks
 
         [SerializeField] private CollisionDetector _collisionDetector;
         [SerializeField] private DestroyFxBase _destroyFx;
+        [SerializeField] private GameObject _visual;
 
         public event Action<BrickView> Hited;
         public event Action<IReusable> Released;
 
         private void OnEnable()
         {
+            _visual.SetActive(true);
+
             _collisionDetector.CollisionEnter += CollisionEnter;
             _collisionDetector.TriggerEnter += TriggerEnter;
         }

@@ -12,5 +12,6 @@ namespace Arkanoid.Paddle
         [field: SerializeField] public float MoveSpeed { get; private set; } = 2.0f;
         [field: SerializeField] public float SmoothMoveFactor { get; private set; } = .15f;
         [field: SerializeField] public float FieldWidth { get; private set; } = 5f;
+        [field: SerializeField] public float BulletPerMinute { get; private set; } = 60f;
     }
 }

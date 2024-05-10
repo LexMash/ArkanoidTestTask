@@ -8,7 +8,7 @@ namespace Arkanoid.Bricks
     public class BrickDTO
     {
         public BrickType Type;
-        public FxType FxType;
+        public ModType FxType;
         public Vector2 Position;
         public bool IsDestroyable;
     }

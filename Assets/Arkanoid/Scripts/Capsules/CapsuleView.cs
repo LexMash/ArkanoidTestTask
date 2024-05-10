@@ -7,6 +7,6 @@ namespace Arkanoid.Capsules
     /// </summary>
     public class CapsuleView : MonoBehaviour
     {
-        [field: SerializeField] public FxType FxType { get; private set; }
+        [field: SerializeField] public ModType FxType { get; private set; }
     }
 }

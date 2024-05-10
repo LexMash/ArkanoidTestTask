@@ -1,6 +1,6 @@
 ﻿namespace Arkanoid.Capsules
 {
-    public enum FxType
+    public enum ModType
     {
         None,
         SlowBall,   //замедляет мяч
@@ -10,6 +10,6 @@
         SplitBall,  //разбивает мяч на три
         EnergyBall, //мяч проходит сквозь все блоки уничтожая их
         LaserGun,   //позволяет стрелять
-        Barier      //активирует барьер, что бы не дать мячу упасть
+        BallKeeper  //активирует барьер, что бы не дать мячу упасть
     }
 }

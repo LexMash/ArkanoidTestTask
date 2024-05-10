@@ -6,7 +6,7 @@ namespace Arkanoid.Bricks
     public class BrickData
     {
         public BrickType Type;
-        public FxType FxType;
+        public ModType FxType;
 
         public Vector2 Position;
         public int Health;
