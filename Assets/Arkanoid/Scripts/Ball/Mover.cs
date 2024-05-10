@@ -12,14 +12,6 @@ namespace Arkanoid.Ball
 
         private float _speed = 0f;
 
-#if UNITY_EDITOR
-        private void Start ()
-        {
-            SetSpeed(5f);
-            SetDirection(Vector2.one);
-        }
-#endif
-
         public void SetSpeed(float speed)
         {
             _speed = speed;

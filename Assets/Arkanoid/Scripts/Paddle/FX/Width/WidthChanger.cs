@@ -17,14 +17,9 @@ namespace Arkanoid.Paddle
         public event Action WidthDecreased;
         public event Action WidthIncreased;
 
-        private float Width => _collider.size.x;
+        public float Width => _collider.size.x;
         private PaddleConfig _config;
-        private Tweener _tween;     
-
-        private void Awake()
-        {
-            _tween.SetAutoKill(false);
-        }
+        private Tweener _tween;
 
         public void Construct(PaddleConfig config)
         {
@@ -32,6 +27,8 @@ namespace Arkanoid.Paddle
 
             Vector3 currentPaddleScale = _visualRoot.transform.localScale;
             _visualRoot.transform.localScale = new Vector3(_config.InitSize, currentPaddleScale.y, currentPaddleScale.z);
+
+            _tween.SetAutoKill(false);
         }
 
         public void Increase()
@@ -51,10 +48,10 @@ namespace Arkanoid.Paddle
         {
             if (CanDecrease())
             {
-                var step = _config.SizeChangeStep;
+                var step = -_config.SizeChangeStep;
 
-                ChangeColliderWidth(-step);
-                ChangeVisualWidth(-step);
+                ChangeColliderWidth(step);
+                ChangeVisualWidth(step);
 
                 WidthDecreased?.Invoke();
             }        

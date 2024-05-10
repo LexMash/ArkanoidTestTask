@@ -5,10 +5,11 @@ using UnityEngine.EventSystems;
 
 public class UITouchZone : MonoBehaviour, IInput, IPointerClickHandler, IDragHandler, IPointerDownHandler
 {
-    [field: SerializeField] public RectTransform RectTransform;
+    [SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private Camera _camera;
 
     public event Action ActionPerformed;
-    public event Action<Vector2> MovePerformed;
+    public event Action<Vector3> MovePerformed;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -17,11 +18,17 @@ public class UITouchZone : MonoBehaviour, IInput, IPointerClickHandler, IDragHan
 
     public void OnDrag(PointerEventData eventData)
     {
-        MovePerformed?.Invoke(eventData.position);
+        Move(eventData);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        MovePerformed?.Invoke(eventData.position);
+        Move(eventData);
+    }
+
+    private void Move(PointerEventData eventData)
+    {
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(_rectTransform, eventData.position, _camera, out Vector3 worldPoint);
+        MovePerformed?.Invoke(worldPoint);
     }
 }

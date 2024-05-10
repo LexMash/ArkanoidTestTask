@@ -2,20 +2,26 @@
 
 namespace Arkanoid.Paddle
 {
-    public class PaddleView : MonoBehaviour
+    public class PaddleView : MonoBehaviour, IMovable
     {
         [field: SerializeField] public WidthChanger WidthChanger { get; private set; }
         [field: SerializeField] public CollisionDetector CollisionDetector { get; private set; }
 
         [Space]
-        [SerializeField] private BoxCollider2D _collider;
         [SerializeField] private Rigidbody2D _rigidbody;
 
-        public float Width => _collider.size.x;
+        public float Width => WidthChanger.Width;
 
-        public void SetVelocity(Vector2 velocity)
+        public Vector2 CurrentPosition
         {
-            _rigidbody.velocity = velocity;
+            get => _rigidbody.position;
+            set => _rigidbody.position = value;
+        }
+
+        public Vector2 Velocity
+        {
+            get => _rigidbody.velocity;
+            set => _rigidbody.velocity = value;
         }
     }
 }

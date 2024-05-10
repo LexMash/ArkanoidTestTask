@@ -5,54 +5,47 @@ namespace Arkanoid.Input
 {
     public class PaddleMobileMoveController : MonoBehaviour, IPaddleMoveController
     {
-        [SerializeField] private UITouchZone _touchZone;
-        [SerializeField] private Camera _camera;
-
-        [SerializeField] private PaddleView _paddle;
-
         [SerializeField] private float _smoothFactor = 0.5f;
-        [SerializeField] private float _fieldWidth;
+        
+        private IInput _input;
+        private IMovable _paddle;
+        private float _fieldWidth;
 
         private float _targetXPosition;
         private float _yPosition;
         private Vector2 _velocity;
 
-        public void Construct(PaddleConfig config, PaddleView paddle)
+        public void Construct(PaddleConfig config, IMovable paddle, IInput input)
         {
             _smoothFactor = config.SmoothMoveFactor;
-
             _paddle = paddle;
+            _yPosition = _paddle.CurrentPosition.y;
+            _fieldWidth = config.FieldWidth;
 
-            _yPosition = _paddle.transform.position.y;
+            _input = input;
+            _input.MovePerformed += OnMovePerformed;
         }
 
-        private void OnEnable()
+        private void OnDestroy()
         {
-            _touchZone.MovePerformed += OnMovePerformed;
-        }
-
-        private void OnDisable()
-        {
-            _touchZone.MovePerformed -= OnMovePerformed;
+            _input.MovePerformed -= OnMovePerformed;
         }
 
         private void FixedUpdate()
         {
-            _paddle.SetVelocity(_velocity);
+            _paddle.Velocity = _velocity; //возможно мне кажется, но коллизии с шариком так лучше обрабатываются
         }
 
         private void Update()
         {
             var targetPosition = new Vector2(_targetXPosition, _yPosition);
 
-            _paddle.transform.position = Vector2.SmoothDamp(_paddle.transform.position, targetPosition, ref _velocity, _smoothFactor * Time.deltaTime);          
+            _paddle.CurrentPosition = Vector2.SmoothDamp(_paddle.CurrentPosition, targetPosition, ref _velocity, _smoothFactor * Time.deltaTime);          
         }
 
-        private void OnMovePerformed(Vector2 position)
+        private void OnMovePerformed(Vector3 position)
         {
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(_touchZone.RectTransform, position, _camera, out Vector3 worldPoint);
-
-            _targetXPosition = ClampXCoordinate(worldPoint, _paddle.Width / 2f);
+            _targetXPosition = ClampXCoordinate(position, _paddle.Width / 2f);
         }
 
         private float ClampXCoordinate(Vector3 worldPoint, float paddleHalfWidth) 

@@ -1,6 +1,7 @@
 ﻿namespace Arkanoid.Gameplay
 {
-    public class ModService
+    public class ModsService
     {
+
     }
 }

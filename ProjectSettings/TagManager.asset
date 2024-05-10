@@ -15,11 +15,11 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ball
+  - Paddle
+  - Bricks
+  - Obstacles
+  - Capsules
   - 
   - 
   - 
@@ -40,4 +40,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 3179747157
+    locked: 0
+  - name: Obstacles
+    uniqueID: 776877581
+    locked: 0
+  - name: Bricks
+    uniqueID: 1314954935
+    locked: 0
+  - name: Ball&Paddle
+    uniqueID: 3518433039
+    locked: 0
+  - name: Capsules
+    uniqueID: 726492867
     locked: 0

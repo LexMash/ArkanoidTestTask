@@ -6,6 +6,6 @@ namespace Arkanoid.Input
     public interface IInput
     {
         event Action ActionPerformed;
-        event Action<Vector2> MovePerformed;
+        event Action<Vector3> MovePerformed;
     }
 }
