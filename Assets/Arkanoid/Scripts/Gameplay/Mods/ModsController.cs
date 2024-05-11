@@ -46,7 +46,7 @@ namespace Arkanoid.Gameplay
 
         private void RemoveConflictingModificators(ModType type)
         {
-            IEnumerable<ModificatorData> canceledMods = _config.FXs.Where(fx => fx.ConflictModType.Contains(type));
+            IEnumerable<ModificatorData> canceledMods = _config.ModDatas.Where(fx => fx.ConflictModType.Contains(type));
 
             if (canceledMods.Count() == 0)
                 return;

@@ -9,6 +9,6 @@
         Red,
         Yellow,
         Gold,
-        Grey
+        Gray
     }
 }

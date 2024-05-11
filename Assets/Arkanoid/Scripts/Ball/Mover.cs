@@ -12,6 +12,12 @@ namespace Arkanoid.Ball
 
         private float _speed = 0f;
 
+        private void Awake()
+        {
+            SetSpeed(5f);
+            SetDirection(Vector2.one);
+        }
+
         public void SetSpeed(float speed)
         {
             _speed = speed;

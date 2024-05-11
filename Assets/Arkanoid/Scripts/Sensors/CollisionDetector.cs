@@ -10,21 +10,31 @@ namespace Arkanoid
         public event Action<Collision2D> CollisionEnter;
         public event Action<Collider2D> TriggerEnter;
 
-        public void SetTriggerMode(bool isEnable)
+        public void SetTriggerMode(bool isTrigger)
         {
-            _collider.isTrigger = isEnable;
+            _collider.isTrigger = isTrigger;
+        }
+        
+        public void CollisionEnable(bool isEnable)
+        {
+            _collider.enabled = isEnable;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            Debug.Log($"{gameObject.name} is collisioned with {collision.collider.name}");
+
             CollisionEnter?.Invoke(collision);
         }
 
         private void OnTriggerEnter2D(Collider2D collider)
         {
+            Debug.Log($"{gameObject.name} is triggered by {collider.name}");
+
             TriggerEnter?.Invoke(collider);
         }
-       
+
+
         private void Reset()
         {
             _collider = GetComponent<Collider2D>();

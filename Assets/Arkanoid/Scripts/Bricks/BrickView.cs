@@ -13,11 +13,14 @@ namespace Arkanoid.Bricks
         [SerializeField] private GameObject _visual;
 
         public event Action<BrickView> Hited;
+        public event Action<BrickView> Triggered;
         public event Action<IReusable> Released;
 
         private void OnEnable()
         {
             _visual.SetActive(true);
+            _collisionDetector.CollisionEnable(true);
+            _collisionDetector.SetTriggerMode(false);
 
             _collisionDetector.CollisionEnter += CollisionEnter;
             _collisionDetector.TriggerEnter += TriggerEnter;
@@ -29,14 +32,16 @@ namespace Arkanoid.Bricks
             _collisionDetector.TriggerEnter -= TriggerEnter;
         }
 
-        public void CollisionEnable(bool isEnable)
+        public void SetTriggerMode(bool isTrigger)
         {
-            _collisionDetector.SetTriggerMode(isEnable);
+            _collisionDetector.SetTriggerMode(isTrigger);
         }
 
         public void Destroy()
         {
-            if(_destroyFx != null)
+            _collisionDetector.CollisionEnable(false);
+
+            if (_destroyFx != null)
             {
                 _destroyFx.Played += DestroyFxOnPlayed;
                 _destroyFx.Play();
@@ -61,7 +66,7 @@ namespace Arkanoid.Bricks
 
         private void TriggerEnter(Collider2D collider)
         {
-            Hited?.Invoke(this);
+            Triggered?.Invoke(this);
         }
     }
 }

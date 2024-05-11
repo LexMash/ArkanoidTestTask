@@ -6,10 +6,23 @@ using UnityEngine.EventSystems;
 public class UITouchZone : MonoBehaviour, IInput, IPointerClickHandler, IDragHandler, IPointerDownHandler
 {
     [SerializeField] private RectTransform _rectTransform;
-    [SerializeField] private Camera _camera;
-
+    
     public event Action ActionPerformed;
     public event Action<Vector3> MovePerformed;
+
+    private Camera _camera;
+
+#if UNITY_EDITOR
+    private void Awake()
+    {
+        _camera = Camera.main;
+    }
+#endif
+
+    public void Construct(Camera camera)
+    {
+        _camera = camera;
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
