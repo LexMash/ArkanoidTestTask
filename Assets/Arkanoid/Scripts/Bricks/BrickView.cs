@@ -32,10 +32,8 @@ namespace Arkanoid.Bricks
             _collisionDetector.TriggerEnter -= TriggerEnter;
         }
 
-        public void SetTriggerMode(bool isTrigger)
-        {
-            _collisionDetector.SetTriggerMode(isTrigger);
-        }
+        public void SetTriggerMode(bool isTrigger) 
+            => _collisionDetector.SetTriggerMode(isTrigger);
 
         public void Destroy()
         {
@@ -59,14 +57,10 @@ namespace Arkanoid.Bricks
             Released?.Invoke(this);
         }
 
-        private void CollisionEnter(Collision2D collision)
-        {
-            Hited?.Invoke(this);
-        }
+        private void CollisionEnter(Collision2D collision) 
+            => Hited?.Invoke(this);
 
-        private void TriggerEnter(Collider2D collider)
-        {
-            Triggered?.Invoke(this);
-        }
+        private void TriggerEnter(Collider2D collider) 
+            => Triggered?.Invoke(this);
     }
 }

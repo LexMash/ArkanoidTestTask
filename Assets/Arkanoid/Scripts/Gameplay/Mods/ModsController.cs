@@ -1,5 +1,6 @@
-﻿using Arkanoid.Capsules;
+﻿using Arkanoid.PowerUPs;
 using Arkanoid.Gameplay.Modificators;
+using Arkanoid.Paddle;
 using Arkanoid.Paddle.FX.Configs;
 using System;
 using System.Collections.Generic;
@@ -9,20 +10,33 @@ namespace Arkanoid.Gameplay
 {
     public class ModsController : IModsController, IDisposable
     {
-        public event Action<ModType> ModAdded;
-        public event Action<ModType> ModRemoved;
+        public event Action<ModificatorData> ModAdded;
+        public event Action<ModificatorData> ModRemoved;
 
         private readonly ModsConfig _config;
         private readonly IModsFactory _modFactory;
+        private readonly IPaddleCollisionNotifier _notifier;
         private readonly Dictionary<ModType, IModificator> _modMap = new();
      
-        public ModsController(ModsConfig config, IModsFactory commandFactory)
+        public ModsController(ModsConfig config, IModsFactory modsFactory, IPaddleCollisionNotifier notifier)
         {
             _config = config;
-            _modFactory = commandFactory;
+            _modFactory = modsFactory;
+            _notifier = notifier;
+
+            _notifier.ModTaken += OnModTaken;
         }
 
-        public void ApplyFx(ModType type)
+        public void Dispose()
+        {
+            _notifier.ModTaken -= OnModTaken;
+
+            _modMap.Clear();
+        }
+
+        private void OnModTaken(ModType type) => ApplyModificator(type);
+
+        private void ApplyModificator(ModType type)
         {
             if (TryReapplyMod(type))
                 return;
@@ -30,14 +44,16 @@ namespace Arkanoid.Gameplay
             RemoveConflictingModificators(type);
             AddNewModificator(type);
 
-            ModAdded?.Invoke(type);
-        }
+            ModificatorData data = GetData(type);
+            ModAdded?.Invoke(data);
+        }     
 
         private bool TryReapplyMod(ModType type)
         {
             if (_modMap.TryGetValue(type, out IModificator applyedMod))
             {
                 applyedMod.Reapply();
+
                 return true;
             }
 
@@ -72,17 +88,16 @@ namespace Arkanoid.Gameplay
             newMod.Apply();
         }
 
-        private void RemoveMod(IModificator command)
+        private void RemoveMod(IModificator modificator)
         {
-            command.Expired -= RemoveMod;
-            _modMap.Remove(command.Type);
+            modificator.Expired -= RemoveMod;
+            _modMap.Remove(modificator.Type);
 
-            ModRemoved?.Invoke(command.Type);
+            ModificatorData data = GetData(modificator.Type);
+            ModRemoved?.Invoke(data);
         }
 
-        public void Dispose()
-        {
-            _modMap.Clear();
-        }
+        private ModificatorData GetData(ModType type)
+            => _config.ModDatas.FirstOrDefault(data => data.Type == type);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Arkanoid.Capsules;
+﻿using Arkanoid.PowerUPs;
 using Arkanoid.Infrastracture.Pool;
 using System;
 

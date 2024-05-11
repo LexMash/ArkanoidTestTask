@@ -1,13 +1,12 @@
-﻿using Arkanoid.Capsules;
+﻿using Arkanoid.PowerUPs;
+using Arkanoid.Paddle.FX.Configs;
 using System;
 
 namespace Arkanoid.Gameplay
 {
     public interface IModsController
     {
-        event Action<ModType> ModAdded;
-        event Action<ModType> ModRemoved;
-
-        void ApplyFx(ModType type);
+        event Action<ModificatorData> ModAdded;
+        event Action<ModificatorData> ModRemoved;
     }
 }

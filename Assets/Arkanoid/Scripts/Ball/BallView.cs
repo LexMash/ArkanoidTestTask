@@ -1,13 +1,25 @@
-﻿using UnityEngine;
+﻿using Arkanoid.Infrastracture.Pool;
+using System;
+using UnityEngine;
 
 namespace Arkanoid.Ball
 {
     /// <summary>
     /// View шара
     /// </summary>
-    public class BallView : MonoBehaviour
+    public class BallView : MonoBehaviour, IReusable, IDestroyable
     {
         [field: SerializeField] public Mover Mover { get; private set; }
         [field: SerializeField] public CollisionDetector CollisionDetector { get; private set; }
+
+        public event Action<IReusable> Released;
+        public event Action<IDestroyable> Destroyed;
+
+        public void Destroy()
+        {
+            Debug.Log("destroy");
+            Released?.Invoke(this);
+            Destroyed?.Invoke(this);
+        }
     }
 }

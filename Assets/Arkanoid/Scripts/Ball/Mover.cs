@@ -8,15 +8,8 @@ namespace Arkanoid.Ball
     public class Mover : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D _rigidbody2D;
-        [SerializeField] private float _smoothTime = 1f;
 
         private float _speed = 0f;
-
-        private void Awake()
-        {
-            SetSpeed(5f);
-            SetDirection(Vector2.one);
-        }
 
         public void SetSpeed(float speed)
         {

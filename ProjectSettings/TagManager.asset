@@ -20,7 +20,7 @@ TagManager:
   - Bricks
   - Obstacles
   - Capsules
-  - 
+  - DestroyCollider
   - 
   - 
   - 
@@ -44,8 +44,8 @@ TagManager:
   - name: BackGround
     uniqueID: 3179747157
     locked: 0
-  - name: Obstacles
-    uniqueID: 776877581
+  - name: Shadows
+    uniqueID: 2348042333
     locked: 0
   - name: Bricks
     uniqueID: 1314954935
@@ -55,4 +55,7 @@ TagManager:
     locked: 0
   - name: Capsules
     uniqueID: 726492867
+    locked: 0
+  - name: Obstacles
+    uniqueID: 776877581
     locked: 0

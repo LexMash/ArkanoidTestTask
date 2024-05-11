@@ -4,7 +4,7 @@ namespace Arkanoid.Gameplay
 {
     public class Timer
     {
-        public event Action<Timer> Completed;
+        public event Action Completed;
 
         private float _time;
         private bool _isCounting;
@@ -25,7 +25,7 @@ namespace Arkanoid.Gameplay
             if (TimeOut())
             {
                 _isCounting = false;
-                Completed?.Invoke(this);
+                Completed?.Invoke();
             }
         }
 

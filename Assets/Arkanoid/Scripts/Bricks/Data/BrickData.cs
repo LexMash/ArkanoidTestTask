@@ -1,4 +1,4 @@
-﻿using Arkanoid.Capsules;
+﻿using Arkanoid.PowerUPs;
 
 namespace Arkanoid.Bricks
 {
@@ -6,5 +6,11 @@ namespace Arkanoid.Bricks
     {
         public ModType ModType;
         public int Health;
+
+        public BrickData(ModType modType, int health)
+        {
+            ModType = modType;
+            Health = health;
+        }
     }
 }

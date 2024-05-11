@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Arkanoid.Bricks
 {
-    public class BrickService : IDisposable, IBrickService
+    public class BrickService : IDisposable, IBrickService, IBrickEventNotifier
     {
-        public event Action<HitBrickData> OnHitBrick;
         public event Action AllBricksRemoved;
+        public event Action<HitBrickData> OnHitBrick;
+        public event Action<HitBrickData> OnDestroyBrick;       
 
         private Dictionary<BrickView, BrickData> _brickMap = new();
 
@@ -50,7 +51,7 @@ namespace Arkanoid.Bricks
                 return;
             }
 
-            OnHitBrick?.Invoke(new HitBrickData(brick.transform.position, true));
+            OnHitBrick?.Invoke(new HitBrickData(brick.Type, brick.transform.position, true));
         }
 
         private void DestroyBrick(BrickView brick, BrickData data)
@@ -60,7 +61,7 @@ namespace Arkanoid.Bricks
             brick.Hited -= OnBrickHited;
             brick.Triggered -= OnBrickTriggered;
 
-            OnHitBrick?.Invoke(new HitBrickData(brick.transform.position, true, data.ModType));
+            OnDestroyBrick?.Invoke(new HitBrickData(brick.Type, brick.transform.position, true, data.ModType));
 
             _brickMap.Remove(brick);
 

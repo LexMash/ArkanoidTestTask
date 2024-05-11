@@ -22,8 +22,6 @@ namespace Arkanoid
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            Debug.Log($"{gameObject.name} is collisioned with {collision.collider.name}");
-
             CollisionEnter?.Invoke(collision);
         }
 
