@@ -21,6 +21,12 @@ namespace Arkanoid.Paddle
         private PaddleConfig _config;
         private Tween _scaleTween;
 
+        private void Start()
+        {
+            ChangeColliderWidth(1);
+            ChangeVisualWidth(1);
+        }
+
         public void Construct(PaddleConfig config)
         {
             _config = config;

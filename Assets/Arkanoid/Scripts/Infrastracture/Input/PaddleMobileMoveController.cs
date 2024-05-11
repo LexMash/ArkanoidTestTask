@@ -4,9 +4,7 @@ using UnityEngine;
 namespace Arkanoid.Input
 {
     public class PaddleMobileMoveController : MonoBehaviour, IPaddleMoveController
-    {
-        [SerializeField] private float _smoothFactor = 0.5f;
-        
+    {                
         private IInput _input;
         private IMovable _paddle;
         private float _fieldWidth;
@@ -14,6 +12,7 @@ namespace Arkanoid.Input
         private float _targetXPosition;
         private float _yPosition;
         private Vector2 _velocity;
+        private float _smoothFactor;
 
         public void Construct(PaddleConfig config, IMovable paddle, IInput input)
         {
@@ -29,11 +28,14 @@ namespace Arkanoid.Input
         private void OnDestroy()
         {
             _input.MovePerformed -= OnMovePerformed;
+
+            _input = null;
+            _paddle = null;           
         }
 
         private void FixedUpdate()
         {
-            _paddle.Velocity = _velocity; //возможно мне кажется, но коллизии с шариком так лучше обрабатываются
+            _paddle.Velocity = _velocity; //по моему коллизии с шариком так лучше обрабатываются
         }
 
         private void Update()

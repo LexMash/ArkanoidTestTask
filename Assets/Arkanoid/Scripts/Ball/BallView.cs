@@ -17,9 +17,10 @@ namespace Arkanoid.Ball
 
         public void Destroy()
         {
-            Debug.Log("destroy");
             Released?.Invoke(this);
             Destroyed?.Invoke(this);
+            
+            gameObject.SetActive(false);
         }
     }
 }
