@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Arkanoid.UI
 {
-    public class ScoreController : IDisposable, IScoreNotifier, IScoreController
+    public class ScoreController : IDisposable, IScoreNotifier
     {
         public event Action<NewScoreData> ScoreChanged;
 

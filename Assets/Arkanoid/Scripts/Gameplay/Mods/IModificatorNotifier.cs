@@ -4,7 +4,7 @@ using System;
 
 namespace Arkanoid.Gameplay
 {
-    public interface IModsController
+    public interface IModificatorNotifier
     {
         event Action<ModificatorData> ModAdded;
         event Action<ModificatorData> ModRemoved;

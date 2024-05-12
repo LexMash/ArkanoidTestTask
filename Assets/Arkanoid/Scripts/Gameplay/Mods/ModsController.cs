@@ -8,19 +8,19 @@ using System.Linq;
 
 namespace Arkanoid.Gameplay
 {
-    public class ModsController : IModsController, IDisposable
+    public class ModsController : IModificatorNotifier, IDisposable
     {
         public event Action<ModificatorData> ModAdded;
         public event Action<ModificatorData> ModRemoved;
 
-        private readonly ModsConfig _config;
+        private readonly IReadOnlyList<ModificatorData> _modData;
         private readonly IModificators _modificators;
         private readonly IPaddleCollisionNotifier _notifier;
         private readonly Dictionary<ModType, IModificator> _modMap = new();
         
         public ModsController(ModsConfig config, IModificators modificators, IPaddleCollisionNotifier notifier)
         {
-            _config = config;
+            _modData = config.ModDatas;
             _modificators = modificators;
             _notifier = notifier;
 
@@ -42,10 +42,8 @@ namespace Arkanoid.Gameplay
                 return;
 
             RemoveConflictingModificators(type);
-            AddNewModificator(type);
 
-            ModificatorData data = GetData(type);
-            ModAdded?.Invoke(data);
+            AddNewModificator(type);          
         }     
 
         private bool TryReapplyMod(ModType type)
@@ -60,9 +58,24 @@ namespace Arkanoid.Gameplay
             return false;
         }
 
+        private void AddNewModificator(ModType type)
+        {
+            IModificator newMod = _modificators.Get(type);
+
+            _modMap[type] = newMod;
+
+            newMod.Expired += RemoveMod;
+
+            newMod.Apply();
+
+            ModificatorData data = GetData(type);
+
+            ModAdded?.Invoke(data);
+        }
+
         private void RemoveConflictingModificators(ModType type)
         {
-            IEnumerable<ModificatorData> canceledMods = _config.ModDatas.Where(fx => fx.ConflictModType.Contains(type));
+            IEnumerable<ModificatorData> canceledMods = _modData.Where(fx => fx.ConflictModType.Contains(type));
 
             if (canceledMods.Count() == 0)
                 return;
@@ -79,25 +92,18 @@ namespace Arkanoid.Gameplay
             }
         }
 
-        private void AddNewModificator(ModType type)
-        {
-            IModificator newMod = _modificators.Get(type);
-            _modMap[type] = newMod;
-
-            newMod.Expired += RemoveMod;
-            newMod.Apply();
-        }
-
         private void RemoveMod(IModificator modificator)
         {
             modificator.Expired -= RemoveMod;
+
             _modMap.Remove(modificator.Type);
 
             ModificatorData data = GetData(modificator.Type);
+
             ModRemoved?.Invoke(data);
         }
 
         private ModificatorData GetData(ModType type)
-            => _config.ModDatas.FirstOrDefault(data => data.Type == type);
+            => _modData.FirstOrDefault(data => data.Type == type);
     }
 }

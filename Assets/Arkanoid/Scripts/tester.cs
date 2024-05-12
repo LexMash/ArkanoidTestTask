@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Arkanoid.UI;
 using Arkanoid.Gameplay.Data;
+using Arkanoid.Paddle.FX.Laser;
 
 public class tester : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class tester : MonoBehaviour
     public PowerUpView[] capsules;
     public BrickConfig brickConfig;
     public ScorePanel scorePanel;
+    public Projectile projectile;
+    public LaserGun laserGun;
     [Space]
 
     public List<BrickView> bricks;
@@ -30,52 +33,58 @@ public class tester : MonoBehaviour
     private ModsController modController;
     private MockModsFactory modFactory;
     private ScoreController scoreController;
+    private ProjectileFactory projectileFactory;
 
     private void Start()
-    {     
-        modFactory = new MockModsFactory(modConfig);
-        modController = new(modConfig, modFactory, null);
-
-        modController.ModAdded += (ModificatorData data) => Debug.Log($"{data.Type} added");
-        modController.ModRemoved += (ModificatorData data) => Debug.Log($"{data.Type} removed");
-
-        moveController.Construct(paddleConfig, paddle);
-        ball.Mover.SetSpeed(8f);
-        ball.Mover.SetDirection(Vector2.one);
-
-        brickService = new BrickService();
-
-        var brickMap = new Dictionary<BrickView, BrickData>()
-        {
-            { bricks[0], new BrickData(ModType.None, 1)},
-            { bricks[1], new BrickData(ModType.Magnet, 1)},
-            { bricks[2], new BrickData(ModType.BallKeeper, 1)},
-            { bricks[3], new BrickData(ModType.EnergyBall, 5)},
-            { bricks[4], new BrickData(ModType.Expand, 1)}
-        };
-
-        brickService.Init(brickMap);
-
-        brickService.OnHitBrick += OnHitBrick;
-
-        scoreController = new ScoreController(brickService, brickConfig, new ScoreData());
-        scorePanel.Construct(scoreController);
-    }
-
-    private void OnHitBrick(HitBrickData data)
     {
-        var index = Random.Range(0, capsules.Length - 1);
-        var capsule = capsules[index];
+        projectileFactory = new ProjectileFactory(null);
+        projectileFactory.Set(projectile);
+        laserGun.Construct(paddleConfig, projectileFactory);
+        laserGun.Enable();
 
-        Instantiate(capsule, data.Position, Quaternion.identity);
+        //modFactory = new MockModsFactory(modConfig);
+        //modController = new(modConfig, modFactory, null);
+
+        //modController.ModAdded += (ModificatorData data) => Debug.Log($"{data.Type} added");
+        //modController.ModRemoved += (ModificatorData data) => Debug.Log($"{data.Type} removed");
+
+        //moveController.Construct(paddleConfig, paddle);
+        //ball.Mover.SetSpeed(8f);
+        //ball.Mover.SetDirection(Vector2.one);
+
+        //brickService = new BrickService();
+
+        //var brickMap = new Dictionary<BrickView, BrickData>()
+        //{
+        //    { bricks[0], new BrickData(ModType.None, 1)},
+        //    { bricks[1], new BrickData(ModType.Magnet, 1)},
+        //    { bricks[2], new BrickData(ModType.BallKeeper, 1)},
+        //    { bricks[3], new BrickData(ModType.EnergyBall, 5)},
+        //    { bricks[4], new BrickData(ModType.Expand, 1)}
+        //};
+
+        //brickService.Init(brickMap);
+
+        //brickService.OnHitBrick += OnHitBrick;
+
+        //scoreController = new ScoreController(brickService, brickConfig, new ScoreData());
+        //scorePanel.Construct(scoreController);
     }
 
-    private void Update()
-    {
-        for (int i = 0; i < modFactory.timers.Count; i++)
-        {
-            var timer = modFactory.timers[i];
-            timer.Update(Time.deltaTime);
-        }
-    }
+    //private void OnHitBrick(HitBrickData data)
+    //{
+    //    var index = Random.Range(0, capsules.Length - 1);
+    //    var capsule = capsules[index];
+
+    //    Instantiate(capsule, data.Position, Quaternion.identity);
+    //}
+
+    //private void Update()
+    //{
+    //    for (int i = 0; i < modFactory.timers.Count; i++)
+    //    {
+    //        var timer = modFactory.timers[i];
+    //        timer.Update(Time.deltaTime);
+    //    }
+    //}
 }

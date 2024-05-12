@@ -19,4 +19,4 @@ MonoBehaviour:
   <MoveSpeed>k__BackingField: 2
   <SmoothMoveFactor>k__BackingField: 17
   <FieldWidth>k__BackingField: 5
-  <BulletPerMinute>k__BackingField: 60
+  <BulletPerMinute>k__BackingField: 120

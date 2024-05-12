@@ -19,13 +19,13 @@ namespace Arkanoid.Ball
         private readonly Dictionary<BallView, Vector2> _velocityMap = new();
 
         private readonly BallConfig _ballConfig;
-        private readonly IBallFactory _factory;
+        private readonly BallFactory _factory;
         private readonly Transform _initTransform;
 
         private BallView _mainBall;
         private bool _magnetModeEnabled;
         
-        public BallController(BallConfig ballConfig, IBallFactory factory, Transform initTransform)
+        public BallController(BallConfig ballConfig, BallFactory factory, Transform initTransform)
         {
             _ballConfig = ballConfig;
             _factory = factory;
@@ -58,7 +58,7 @@ namespace Arkanoid.Ball
 
         public void AddBall()
         {
-            BallView ball = _factory.CreateAtPosition(_mainBall.transform.position);
+            BallView ball = _factory.Create(_mainBall.transform.position);
 
             SubscribeToBallEvents(ball);
 

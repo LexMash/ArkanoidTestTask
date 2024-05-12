@@ -7,27 +7,33 @@ namespace Arkanoid.Paddle.FX.Laser
 {
     public class Projectile : MonoBehaviour, IReusable
     {
-        [SerializeField] private CollisionDetector _collisionDetector;
         [SerializeField] private DestroyFxBase _destroyFx;
         [SerializeField] private GameObject _visual;
-
+        [SerializeField] private float _speed = 15f;
+       
         public event Action<IReusable> Released;
+
+        private bool _notCollisioned;
 
         private void OnEnable()
         {
             _visual.SetActive(true);
-
-            _collisionDetector.CollisionEnter += CollisionEnter;
+            _notCollisioned = true;
         }
 
-        private void OnDisable()
+        private void Update()
         {
-            _collisionDetector.CollisionEnter -= CollisionEnter;
+            if(_notCollisioned)
+                transform.position += Vector3.up * _speed * Time.deltaTime;
         }
 
-        private void CollisionEnter(Collision2D collision)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
+            _notCollisioned = false;
+
             _visual.SetActive(false);
+            gameObject.SetActive(false);
+            Released?.Invoke(this);//test
 
             _destroyFx.Played += OnPlayed;
             _destroyFx.Play();
@@ -41,7 +47,6 @@ namespace Arkanoid.Paddle.FX.Laser
 
         private void Reset()
         {
-            _collisionDetector = GetComponent<CollisionDetector>();
             _destroyFx = GetComponent<DestroyFxBase>();
         }
     }
