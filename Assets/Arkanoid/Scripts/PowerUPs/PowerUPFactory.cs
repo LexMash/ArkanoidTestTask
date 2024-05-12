@@ -2,7 +2,6 @@
 using Arkanoid.Infrastracture.Pool;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Arkanoid.PowerUPs

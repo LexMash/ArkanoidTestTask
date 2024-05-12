@@ -5,9 +5,11 @@ namespace Arkanoid.Ball
     /// <summary>
     /// Компонент для движения шара
     /// </summary>
-    public class Mover : MonoBehaviour
+    public class BallMover : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D _rigidbody2D;
+
+        public Vector2 Velocity => _rigidbody2D.velocity;
 
         private float _speed = 0f;
 

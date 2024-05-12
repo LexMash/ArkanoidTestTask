@@ -5,7 +5,7 @@ namespace Arkanoid.Paddle
 {
     public interface IPaddleCollisionNotifier
     {
-        event Action<ModType> ModTaken;
+        event Action<ModType> PowerUPTaken;
         event Action BallCollision;
     }
 }

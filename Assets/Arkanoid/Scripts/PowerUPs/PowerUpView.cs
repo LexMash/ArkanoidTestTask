@@ -1,5 +1,4 @@
-﻿using Arkanoid.Ball;
-using Arkanoid.Infrastracture.Pool;
+﻿using Arkanoid.Infrastracture.Pool;
 using System;
 using UnityEngine;
 
@@ -25,6 +24,7 @@ namespace Arkanoid.PowerUPs
         {
             Released?.Invoke(this);
             Destroyed?.Invoke(this);
+            gameObject.SetActive(false);
         }
     }
 }

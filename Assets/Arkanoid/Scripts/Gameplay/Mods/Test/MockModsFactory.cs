@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Arkanoid.Gameplay.Mods
 {
-    public class MockModsFactory : IModsFactory
+    public class MockModsFactory : IModificators
     {
         public List<Timer> timers = new List<Timer>();
 
@@ -17,7 +17,7 @@ namespace Arkanoid.Gameplay.Mods
             _config = config;
         }
 
-        public IModificator Create(ModType type)
+        public IModificator Get(ModType type)
         {
             var data = _config.ModDatas.FirstOrDefault(data => data.Type == type);
 

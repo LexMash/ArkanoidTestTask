@@ -14,27 +14,27 @@ namespace Arkanoid.Gameplay
         public event Action<ModificatorData> ModRemoved;
 
         private readonly ModsConfig _config;
-        private readonly IModsFactory _modFactory;
+        private readonly IModificators _modificators;
         private readonly IPaddleCollisionNotifier _notifier;
         private readonly Dictionary<ModType, IModificator> _modMap = new();
-     
-        public ModsController(ModsConfig config, IModsFactory modsFactory, IPaddleCollisionNotifier notifier)
+        
+        public ModsController(ModsConfig config, IModificators modificators, IPaddleCollisionNotifier notifier)
         {
             _config = config;
-            _modFactory = modsFactory;
+            _modificators = modificators;
             _notifier = notifier;
 
-            _notifier.ModTaken += OnModTaken;
+            _notifier.PowerUPTaken += OnPowerUPTaken;
         }
 
         public void Dispose()
         {
-            _notifier.ModTaken -= OnModTaken;
+            _notifier.PowerUPTaken -= OnPowerUPTaken;
 
             _modMap.Clear();
         }
 
-        private void OnModTaken(ModType type) => ApplyModificator(type);
+        private void OnPowerUPTaken(ModType type) => ApplyModificator(type);
 
         private void ApplyModificator(ModType type)
         {
@@ -52,7 +52,7 @@ namespace Arkanoid.Gameplay
         {
             if (_modMap.TryGetValue(type, out IModificator applyedMod))
             {
-                applyedMod.Reapply();
+                applyedMod.Apply();
 
                 return true;
             }
@@ -81,7 +81,7 @@ namespace Arkanoid.Gameplay
 
         private void AddNewModificator(ModType type)
         {
-            IModificator newMod = _modFactory.Create(type);
+            IModificator newMod = _modificators.Get(type);
             _modMap[type] = newMod;
 
             newMod.Expired += RemoveMod;

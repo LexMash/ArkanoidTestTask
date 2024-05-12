@@ -15,6 +15,8 @@ namespace Arkanoid.Gameplay
             _time = time;
         }
 
+        public void Stop() => _isCounting = false;
+
         public void Update(float timeDelta)
         {
             if (!_isCounting)

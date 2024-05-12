@@ -3,8 +3,8 @@ using Arkanoid.Gameplay.Modificators;
 
 namespace Arkanoid.Gameplay
 {
-    public interface IModsFactory
+    public interface IModificators
     {      
-        IModificator Create(ModType type);
+        IModificator Get(ModType type);
     }
 }

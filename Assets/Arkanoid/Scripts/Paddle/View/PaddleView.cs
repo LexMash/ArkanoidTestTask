@@ -7,6 +7,7 @@ namespace Arkanoid.Paddle
         [field: SerializeField] public WidthChanger WidthChanger { get; private set; }
         [field: SerializeField] public CollisionDetector CollisionDetector { get; private set; }
         [field: SerializeField] public Animator Animator { get; private set; }
+        [field: SerializeField] public Transform BallInitialPosition { get; private set; }
 
         [Space]
         [SerializeField] private Rigidbody2D _rigidbody;

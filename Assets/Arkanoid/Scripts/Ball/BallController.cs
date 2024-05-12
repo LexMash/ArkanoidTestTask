@@ -6,18 +6,25 @@ using UnityEngine;
 
 namespace Arkanoid.Ball
 {
-    public class BallController : IDisposable
+    public class BallController : IDisposable, IBallController, IBallCollisionNotifier
     {
         public event Action BallDestroed;
+        public event Action BrickCollision;
+        public event Action PaddleCollision;
+        public event Action WallCollision;
+
+        public int BallsCount => _balls.Count;
 
         private readonly List<BallView> _balls = new();
+        private readonly Dictionary<BallView, Vector2> _velocityMap = new();
 
         private readonly BallConfig _ballConfig;
         private readonly IBallFactory _factory;
         private readonly Transform _initTransform;
 
         private BallView _mainBall;
-
+        private bool _magnetModeEnabled;
+        
         public BallController(BallConfig ballConfig, IBallFactory factory, Transform initTransform)
         {
             _ballConfig = ballConfig;
@@ -25,13 +32,21 @@ namespace Arkanoid.Ball
             _initTransform = initTransform;
         }
 
-        public void ResetBall()
+        public void SetInitialState()
         {
-            _mainBall = _factory.CreateAtPosition(_initTransform.position);
-            _mainBall.transform.SetParent(_initTransform);
+            if (_mainBall == null)
+                _mainBall = _factory.Create();
+
+            if (_balls.Count > 0)
+                DestroyExtraBalls();
+
+            SubscribeToBallEvents(_mainBall);
+
+            _balls.Add(_mainBall);
+            SetStartBallPosition();
         }
 
-        public void StartLaunch()
+        public void FirstLaunch()
         {
             _mainBall.transform.SetParent(null);
             _mainBall.Mover.SetSpeed(_ballConfig.MainSpeed);
@@ -43,18 +58,32 @@ namespace Arkanoid.Ball
 
         public void AddBall()
         {
-            BallView ball = _factory.CreateAtPosition(_balls[0].transform.position);
+            BallView ball = _factory.CreateAtPosition(_mainBall.transform.position);
 
-            ball.Destroyed += OnBallDestroyed;
+            SubscribeToBallEvents(ball);
 
             _balls.Add(ball);
 
-            ball.Mover.SetSpeed(_ballConfig.MainSpeed);
+            LaunchToRandomDirection(ball);
+        }
 
-            float randomX = UnityEngine.Random.Range(-1f, 1f);
-            float randomY = UnityEngine.Random.Range(-1f, 1f);
+        private void DestroyExtraBalls()
+        {
+            var count = _balls.Count;
 
-            ball.Mover.SetDirection(new Vector2(randomX, randomY));
+            for (int i = 0; i < count; i++)
+            {
+                var ball = _balls[i];
+               
+                if (ball == _mainBall)
+                    continue;
+
+                UnsubscribeFromBallEvents(ball);
+
+                ball.Destroy();
+
+                _balls.Remove(ball);
+            }
         }
 
         public void SpeedDown()
@@ -67,31 +96,94 @@ namespace Arkanoid.Ball
             ChangeSpeed(_ballConfig.MainSpeed);
         }
 
+        public void MagnetModeEnable(bool isEnable)
+        {
+            _magnetModeEnabled = isEnable;
+
+            if (!_magnetModeEnabled && _velocityMap.Count > 0)
+                ReleaseMagnet();
+        }
+
+        public void ReleaseMagnet()
+        {
+            foreach (var kvp in _velocityMap)
+            {
+                BallView ball = kvp.Key;
+                Vector2 velocity = kvp.Value;
+
+                ball.transform.SetParent(null);
+                ball.Mover.SetSpeed(velocity.magnitude);
+                ball.Mover.SetDirection(velocity);
+            }
+
+            _velocityMap.Clear();
+        }
+
         public void Dispose()
         {
             foreach (var ball in _balls)
             {
-                ball.Destroyed -= OnBallDestroyed;
+                UnsubscribeFromBallEvents(ball);
             }
 
             _balls.Clear();
+            _velocityMap.Clear();
 
             _mainBall = null;
+        }
+
+        private void OnBrickCollision()
+        {
+            BrickCollision?.Invoke();
+        }
+
+        private void OnPaddleCollision(BallView ball)
+        {
+            PaddleCollision?.Invoke();
+
+            if (_magnetModeEnabled)
+            {
+                MagnetizeBall(ball);
+            }
+        }
+
+        private void MagnetizeBall(BallView view)
+        {
+            _velocityMap[view] = view.Mover.Velocity;
+
+            view.transform.SetParent(_initTransform);
+            view.Mover.SetSpeed(0f);
+        }
+
+        private void OnWallCollision()
+        {
+            WallCollision?.Invoke();
+        }
+
+        private void LaunchToRandomDirection(BallView ball)
+        {
+            ball.Mover.SetSpeed(_ballConfig.MainSpeed);
+
+            float randomX = UnityEngine.Random.Range(-1f, 1f);
+            float randomY = UnityEngine.Random.Range(-1f, 1f);
+
+            ball.Mover.SetDirection(new Vector2(randomX, randomY));
         }
 
         private void OnBallDestroyed(IDestroyable destroyable)
         {
             var ball = destroyable as BallView;
 
-            ball.Destroyed -= OnBallDestroyed;
+            UnsubscribeFromBallEvents(ball);
 
             ball.gameObject.SetActive(false);
 
             _balls.Remove(ball);
 
-            if(_balls.Count == 0)
+            if (_balls.Count == 0)
             {
                 BallDestroed?.Invoke();
+
                 return;
             }
 
@@ -108,10 +200,32 @@ namespace Arkanoid.Ball
                 _balls[i].Mover.SetSpeed(speed);
             }
         }
-    }
 
-    public interface IBallFactory
-    {
-        BallView CreateAtPosition(Vector2 position);
+        private void SetStartBallPosition()
+        {
+            _mainBall.Mover.SetSpeed(0);
+            _mainBall.gameObject.SetActive(true);
+
+            _mainBall.transform.SetParent(_initTransform);
+            _mainBall.transform.position = Vector3.zero;
+        }
+
+        private void SubscribeToBallEvents(BallView ball)
+        {
+            ball.Destroyed += OnBallDestroyed;
+
+            ball.WallCollision += OnWallCollision;
+            ball.PaddleCollision += OnPaddleCollision;
+            ball.BrickCollision += OnBrickCollision;
+        }
+
+        private void UnsubscribeFromBallEvents(BallView ball)
+        {
+            ball.Destroyed -= OnBallDestroyed;
+
+            ball.WallCollision -= OnWallCollision;
+            ball.PaddleCollision -= OnPaddleCollision;
+            ball.BrickCollision -= OnBrickCollision;
+        }
     }
 }

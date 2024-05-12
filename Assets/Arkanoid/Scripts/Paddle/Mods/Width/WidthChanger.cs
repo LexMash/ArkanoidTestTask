@@ -1,10 +1,9 @@
 ﻿using DG.Tweening;
-using System;
 using UnityEngine;
 
 namespace Arkanoid.Paddle
 {
-    public class WidthChanger : MonoBehaviour, IWidthChanger, IWidthChangeNotifier
+    public class WidthChanger : MonoBehaviour, IPaddleSizeController
     {
         [SerializeField] private CapsuleCollider2D _collider;
         [SerializeField] private SpriteRenderer _visual;
@@ -14,50 +13,37 @@ namespace Arkanoid.Paddle
         [SerializeField] private float _changeSizeSpeed = 0.3f;
         [SerializeField] private Ease _ease;
 
-        public event Action WidthDecreased;
-        public event Action WidthIncreased;
-
         public float Width => _collider.size.x;
+
         private PaddleConfig _config;
         private Tween _scaleTween;
-
-        private void Start()
-        {
-            ChangeColliderWidth(1);
-            ChangeVisualWidth(1);
-        }
-
+       
         public void Construct(PaddleConfig config)
         {
             _config = config;
+
             _scaleTween.SetAutoKill(false);
+        }
+
+        public void SetInitialSize()
+        {
             _visual.size = new Vector3(_config.InitSize, _visual.size.y);
         }
 
         public void Increase()
         {
-            if (CanIncrease())
-            {
-                var step = _config.SizeChangeStep;
+            var step = _config.SizeChangeStep;
 
-                ChangeColliderWidth(step);
-                ChangeVisualWidth(step);
-
-                WidthIncreased?.Invoke();
-            }         
+            ChangeColliderWidth(step);
+            ChangeVisualWidth(step);
         }
 
         public void Decrease()
         {
-            if (CanDecrease())
-            {
-                var step = -_config.SizeChangeStep;
+            var step = -_config.SizeChangeStep;
 
-                ChangeColliderWidth(step);
-                ChangeVisualWidth(step);
-
-                WidthDecreased?.Invoke();
-            }        
+            ChangeColliderWidth(step);
+            ChangeVisualWidth(step);
         }
 
         private void ChangeVisualWidth(float value)
@@ -77,10 +63,10 @@ namespace Arkanoid.Paddle
             _collider.size = new Vector2(currentColliderSize.x + value, currentColliderSize.y);
         }
 
-        private bool CanIncrease()
+        public bool CanIncrease()
             => Width + _config.SizeChangeStep <= _config.MaxSize;
 
-        private bool CanDecrease()
+        public bool CanDecrease()
             => Width - _config.SizeChangeStep >= _config.MinSize;
 
         private void OnDestroy()

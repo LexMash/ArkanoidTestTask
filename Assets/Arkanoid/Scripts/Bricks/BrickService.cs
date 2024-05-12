@@ -13,7 +13,7 @@ namespace Arkanoid.Bricks
 
         public void Init(Dictionary<BrickView, BrickData> brickMap)
         {
-            Clear();
+            ClearExistingData();
 
             _brickMap = brickMap;
 
@@ -36,7 +36,7 @@ namespace Arkanoid.Bricks
 
         public void Dispose()
         {
-            Clear();
+            ClearExistingData();
         }
 
         private void OnBrickHited(BrickView brick)
@@ -80,7 +80,7 @@ namespace Arkanoid.Bricks
             DestroyBrick(brick, data);
         }
 
-        private void Clear()
+        private void ClearExistingData()
         {
             foreach (KeyValuePair<BrickView, BrickData> kvp in _brickMap)
             {

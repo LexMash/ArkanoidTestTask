@@ -27,8 +27,6 @@ namespace Arkanoid
 
         private void OnTriggerEnter2D(Collider2D collider)
         {
-            Debug.Log($"{gameObject.name} is triggered by {collider.name}");
-
             TriggerEnter?.Invoke(collider);
         }
 

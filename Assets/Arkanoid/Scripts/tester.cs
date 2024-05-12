@@ -29,19 +29,17 @@ public class tester : MonoBehaviour
     private BrickService brickService;
     private ModsController modController;
     private MockModsFactory modFactory;
-    private PaddleCollisionHandler collisionHandler;
     private ScoreController scoreController;
 
     private void Start()
     {     
-        collisionHandler = new PaddleCollisionHandler(paddle.CollisionDetector);
         modFactory = new MockModsFactory(modConfig);
-        modController = new(modConfig, modFactory, collisionHandler);
+        modController = new(modConfig, modFactory, null);
 
         modController.ModAdded += (ModificatorData data) => Debug.Log($"{data.Type} added");
         modController.ModRemoved += (ModificatorData data) => Debug.Log($"{data.Type} removed");
 
-        moveController.Construct(paddleConfig, paddle, zone);
+        moveController.Construct(paddleConfig, paddle);
         ball.Mover.SetSpeed(8f);
         ball.Mover.SetDirection(Vector2.one);
 
