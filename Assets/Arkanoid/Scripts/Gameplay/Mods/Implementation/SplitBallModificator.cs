@@ -1,7 +1,6 @@
 ﻿using Arkanoid.Ball;
 using Arkanoid.Ball.Data;
 using Arkanoid.Gameplay.Modificators;
-using Arkanoid.Infrastracture.Pool;
 using Arkanoid.PowerUPs;
 using System;
 
@@ -12,7 +11,6 @@ namespace Arkanoid.Gameplay.Mods.Implementation
         public ModType Type => ModType.SplitBall;
 
         public event Action<IModificator> Expired;
-        public event Action<IReusable> Released;
 
         private readonly IBallController _ballController;
         private readonly BallConfig _config;

@@ -1,10 +1,13 @@
 ﻿using Arkanoid.Bricks;
 using Arkanoid.Levels;
 using Arkanoid.PowerUPs;
+using Cysharp.Threading.Tasks;
 using LevelEditor.UI;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace LevelEditor.Editor
 {
@@ -16,9 +19,10 @@ namespace LevelEditor.Editor
         [SerializeField] private ControllPanel _controllPanel;
         [SerializeField] private EditorVisualizer _visualizer;
         [SerializeField] private BrickConfig _brickConfig;
+        //[SerializeField] private TextMeshProUGUI _log;
 
         private EditorLevelData _editorData;
-        private LevelDataService _dataProvider;
+        private EditorDataService _dataProvider;
 
         private BrickType _currentBrick = BrickType.None;
         private ModType _currentMod = ModType.None;
@@ -31,7 +35,7 @@ namespace LevelEditor.Editor
         {
             _editorData = new(_brickConfig);
 
-            _dataProvider = new LevelDataService();
+            _dataProvider = new EditorDataService();
 
             _levels = _dataProvider.LoadLevelList();
         }
@@ -110,8 +114,7 @@ namespace LevelEditor.Editor
             if (ModChoused())
             {
                 if (_editorData.TryAddPowerUp(cellPosition, _currentMod))
-                {
-
+                { 
                     _currentMod = ModType.None;
 
                     _visualizer.PlaceObject(cellPosition);
@@ -146,14 +149,12 @@ namespace LevelEditor.Editor
         {
             BrickDTO[] dtos = _editorData.GetData();
 
-            if(dtos.Length == 0)
+            if (dtos.Length == 0)
                 return;
 
-            _dataProvider.SaveLevel(new LevelData(_levelName, dtos));
+            _dataProvider.SaveLevel(new Level(_levelName, dtos));
 
-            var equals = _levels.Where(levelName => levelName.Equals(_levelName));
-
-            if (equals.Count() > 0)
+            if (LevelAvailableInList())
             {
                 return;
             }
@@ -163,9 +164,13 @@ namespace LevelEditor.Editor
             _dataProvider.SaveLevelList(_levels);
         }
 
-        private void OnLoadClicked()
+        private bool LevelAvailableInList() => _levels.Any(levelName => levelName.Equals(_levelName));
+
+        private async void OnLoadClicked()
         {
-            var levelData = _dataProvider.LoadLevelData(_levelName);
+            //_log.text = "start load";
+
+            var levelData = await _dataProvider.LoadLevelData(_levelName);
 
             _levelName = levelData.Name;
 
@@ -184,6 +189,11 @@ namespace LevelEditor.Editor
 
             _visualizer.Setup(levelData);
         }
+
+        //private void ShowResult(UnityWebRequest.Result result, string levelName)
+        //{
+        //    _log.text = $"{result} for level {levelName}";
+        //}
 
         private void OnEraseModeClicked()
         {

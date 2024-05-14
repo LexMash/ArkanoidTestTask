@@ -1,15 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arkanoid.Bricks
 {
-    public class BrickService : IDisposable, IBrickService, IBrickEventNotifier
+    public class BrickService : IDisposable
     {
         public event Action AllBricksRemoved;
-        public event Action<HitBrickData> OnHitBrick;
-        public event Action<HitBrickData> OnDestroyBrick;       
+        public event Action<HitBrickData> BrickHitted;
+        public event Action<HitBrickData> BrickDestroyed;
 
+        private readonly List<BrickMetaData> _metaData;
         private Dictionary<BrickView, BrickData> _brickMap = new();
+
+        public void Init(BrickView[] bricks, BrickDTO[] brickDTOs)
+        {
+            ClearExistingData();
+
+            for(int i = 0; i < bricks.Length; i++)
+            {
+                BrickDTO dto = brickDTOs[i];
+
+                if (dto.IsDestroyable == false)
+                    continue;
+
+                BrickMetaData meta = GetMeta(dto.Type);
+
+                BrickData brickData = new(dto.FxType, meta.Health);
+
+                BrickView brick = bricks[i];
+
+                _brickMap[brick] = brickData;
+
+                Subscribe(brick);
+            }
+        }
 
         public void Init(Dictionary<BrickView, BrickData> brickMap)
         {
@@ -21,8 +46,7 @@ namespace Arkanoid.Bricks
             {
                 BrickView brick = kvp.Key;
 
-                brick.Hited += OnBrickHited;
-                brick.Triggered += OnBrickTriggered;
+                Subscribe(brick);
             }
         }
 
@@ -51,17 +75,16 @@ namespace Arkanoid.Bricks
                 return;
             }
 
-            OnHitBrick?.Invoke(new HitBrickData(brick.Type, brick.transform.position, true));
+            BrickHitted?.Invoke(new HitBrickData(brick.Type, brick.transform.position, true));
         }
 
         private void DestroyBrick(BrickView brick, BrickData data)
         {
             brick.Destroy();
 
-            brick.Hited -= OnBrickHited;
-            brick.Triggered -= OnBrickTriggered;
+            Unsubscribe(brick);
 
-            OnDestroyBrick?.Invoke(new HitBrickData(brick.Type, brick.transform.position, true, data.ModType));
+            BrickDestroyed?.Invoke(new HitBrickData(brick.Type, brick.transform.position, true, data.ModType));
 
             _brickMap.Remove(brick);
 
@@ -85,12 +108,24 @@ namespace Arkanoid.Bricks
             foreach (KeyValuePair<BrickView, BrickData> kvp in _brickMap)
             {
                 BrickView brick = kvp.Key;
-
-                brick.Hited -= OnBrickHited;
-                brick.Triggered -= OnBrickTriggered;
+                Unsubscribe(brick);
             }
 
             _brickMap.Clear();
         }
+
+        private void Subscribe(BrickView brick)
+        {
+            brick.Hited += OnBrickHited;
+            brick.Triggered += OnBrickTriggered;
+        }
+
+        private void Unsubscribe(BrickView brick)
+        {
+            brick.Hited -= OnBrickHited;
+            brick.Triggered -= OnBrickTriggered;
+        }
+
+        private BrickMetaData GetMeta(BrickType type) => _metaData.First(m => m.Type == type);
     }
 }

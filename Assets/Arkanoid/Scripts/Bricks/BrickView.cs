@@ -35,12 +35,11 @@ namespace Arkanoid.Bricks
         public void SetTriggerMode(bool isTrigger) 
             => _collisionDetector.SetTriggerMode(isTrigger);
 
-        public void Destroy()
-        {
-            _collisionDetector.CollisionEnable(false);
-
-            if (_destroyFx != null)
+        public void Destroy(bool withFx = true)
+        {           
+            if (withFx && _destroyFx != null)
             {
+                _collisionDetector.CollisionEnable(false);
                 _destroyFx.Played += DestroyFxOnPlayed;
                 _destroyFx.Play();
             }

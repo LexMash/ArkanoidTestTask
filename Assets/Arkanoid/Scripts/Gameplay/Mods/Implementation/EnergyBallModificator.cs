@@ -32,7 +32,7 @@ namespace Arkanoid.Gameplay.Mods.Implementation
 
             _timer.Start(_data.Time);
 
-            _levelController.CollisionEnable(false);
+            _levelController.MakeBricksHollow();
         }
 
         private void OnCompleted()
@@ -48,7 +48,7 @@ namespace Arkanoid.Gameplay.Mods.Implementation
 
             _timer.Completed -= OnCompleted;
 
-            _levelController.CollisionEnable(true);
+            _levelController.MakeBricksSolid();
         }
     }
 }

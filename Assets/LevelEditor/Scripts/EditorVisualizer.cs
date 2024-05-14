@@ -29,7 +29,7 @@ namespace LevelEditor
             _modFactory = new EditorModFactory(_modData, _modPrefab);
         }
 
-        public void Setup(LevelData data)
+        public void Setup(Level data)
         {
             _objectMap.Clear();
 

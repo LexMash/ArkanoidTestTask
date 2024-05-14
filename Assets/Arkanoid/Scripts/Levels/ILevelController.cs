@@ -1,7 +1,14 @@
-﻿namespace Arkanoid.Levels
+﻿using System;
+
+namespace Arkanoid.Levels
 {
     public interface ILevelController
     {
-        void CollisionEnable(bool enable);
+        event Action<string> LevelLoaded;
+
+        void Load(string levelName);
+        void MakeBricksHollow();
+        void MakeBricksSolid();
+        void Restart();
     }
 }

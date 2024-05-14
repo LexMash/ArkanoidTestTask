@@ -4,8 +4,8 @@ namespace Arkanoid.Bricks
 {
     public interface IBrickEventNotifier
     {
-        event Action AllBricksRemoved;
-        event Action<HitBrickData> OnDestroyBrick;
-        event Action<HitBrickData> OnHitBrick;
+        event Action OnAllBricksRemoved;
+        event Action<HitBrickData> OnBrickDestroyed;
+        event Action<HitBrickData> OnBrickHitted;
     }
 }

@@ -20,7 +20,7 @@ namespace Arkanoid.UI
 
             FillDictionary(config);
 
-            _notifier.OnDestroyBrick += OnDestroyBrick;
+            _notifier.OnBrickDestroyed += OnDestroyBrick;
         }
 
         public void ResetScore()
@@ -31,7 +31,7 @@ namespace Arkanoid.UI
 
         public void Dispose()
         {
-            _notifier.OnDestroyBrick -= OnDestroyBrick;
+            _notifier.OnBrickDestroyed -= OnDestroyBrick;
             _scoreMap.Clear();
         }
 
