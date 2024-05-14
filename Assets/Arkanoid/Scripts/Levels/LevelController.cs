@@ -68,7 +68,14 @@ namespace Arkanoid.Levels
 
         public void MakeBricksSolid() => _brickService.EnableTriggerMode(false);
 
-        public void Dispose() => _currentLevel = null;
+        public void Dispose()
+        {
+            _currentLevel = null;
+
+            _brickService.BrickHitted -= BrickHitted;
+            _brickService.BrickDestroyed -= BrickDestroyed;
+            _brickService.AllBricksRemoved -= AllBricksRemoved;
+        }
 
         private bool TryLoadSameLevel(string levelName) => _currentLevel.Name == levelName;
 
