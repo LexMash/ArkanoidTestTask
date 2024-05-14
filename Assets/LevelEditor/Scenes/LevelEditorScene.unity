@@ -187,8 +187,8 @@ RectTransform:
   m_Children:
   - {fileID: 1899782407}
   - {fileID: 1137508632}
-  - {fileID: 899534899}
   - {fileID: 2128004500}
+  - {fileID: 899534899}
   - {fileID: 1055286160}
   m_Father: {fileID: 1083444429}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -237,6 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _resetBttn: {fileID: 1899782408}
   _saveLevelBttn: {fileID: 1137508633}
+  _loadLevelBttn: {fileID: 2128004501}
   _eraseModeBttn: {fileID: 899534900}
   _inputField: {fileID: 1055286161}
 --- !u!1 &201308070
@@ -1938,7 +1939,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Load
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2112,7 +2113,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 27.4
-  m_CharacterLimit: 6
+  m_CharacterLimit: 10
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -2168,7 +2169,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3386,12 +3387,12 @@ GameObject:
   - component: {fileID: 2128004502}
   - component: {fileID: 2128004501}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: Load_bttn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2128004500
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3407,10 +3408,10 @@ RectTransform:
   - {fileID: 1034972571}
   m_Father: {fileID: 118008321}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 590, y: -50}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2128004501
 MonoBehaviour:

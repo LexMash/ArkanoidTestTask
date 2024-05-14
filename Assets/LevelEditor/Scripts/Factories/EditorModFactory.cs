@@ -20,6 +20,7 @@ namespace LevelEditor.Factories
         public PowerUpEditorView Create(ModType type)
         {
             PowerUpEditorView powerUp = Intantiate(_prefab, Vector2.zero);
+
             Sprite sprite = _data.Data.First(d => d.Type == type).Visual;
 
             powerUp.Setup(type, sprite);

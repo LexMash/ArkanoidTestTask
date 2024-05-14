@@ -42,13 +42,21 @@ namespace LevelEditor
                 var brick = _brickFactory.Create(brickData.Type);
                 brick.transform.position = position;
 
-                var mod = _modFactory.Create(brickData.FxType);
-                mod.transform.position = position;
-
-                _objectMap[position] = new List<GameObject>()
+                var objList = new List<GameObject>
                 {
-                    brick.gameObject, mod.gameObject
+                    brick.gameObject
                 };
+
+                if (brickData.FxType != ModType.None)
+                {
+                    PowerUpEditorView mod = _modFactory.Create(brickData.FxType);
+
+                    mod.transform.position = position;
+
+                    objList.Add(mod.gameObject);
+                }
+
+                _objectMap[position] = objList;
             }
         }
 
@@ -125,8 +133,10 @@ namespace LevelEditor
             if (_currentObject == null)
                 return;
 
-            _currentObject.transform.position = _camera.ScreenToWorldPoint(Input.mousePosition);
+            var position = _camera.ScreenToWorldPoint(Input.mousePosition);
+            position.z = 0f;
 
+            _currentObject.transform.position = position;
         }
     }
 }

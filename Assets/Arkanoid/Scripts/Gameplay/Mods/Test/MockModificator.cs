@@ -1,6 +1,5 @@
 ﻿using Arkanoid.PowerUPs;
 using Arkanoid.Gameplay.Modificators;
-using Arkanoid.Infrastracture.Pool;
 using Arkanoid.Paddle.FX.Configs;
 using System;
 using UnityEngine;
@@ -12,7 +11,6 @@ namespace Arkanoid.Gameplay.Mods
         public ModType Type => _data.Type;
 
         public event Action<IModificator> Expired;
-        public event Action<IReusable> Released;
 
         private readonly ModificatorData _data;
         private readonly Timer _timer;

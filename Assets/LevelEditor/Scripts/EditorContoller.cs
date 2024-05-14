@@ -2,6 +2,8 @@
 using Arkanoid.Levels;
 using Arkanoid.PowerUPs;
 using LevelEditor.UI;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LevelEditor.Editor
@@ -16,11 +18,12 @@ namespace LevelEditor.Editor
         [SerializeField] private BrickConfig _brickConfig;
 
         private EditorLevelData _editorData;
-        private DataProvider _dataProvider;
+        private LevelDataService _dataProvider;
 
         private BrickType _currentBrick = BrickType.None;
         private ModType _currentMod = ModType.None;
 
+        private List<string> _levels = new List<string>();
         private string _levelName = string.Empty;
         private bool _eraseModeEnable;
 
@@ -28,7 +31,9 @@ namespace LevelEditor.Editor
         {
             _editorData = new(_brickConfig);
 
-            _dataProvider = new DataProvider();
+            _dataProvider = new LevelDataService();
+
+            _levels = _dataProvider.LoadLevelList();
         }
 
         private void OnEnable()
@@ -39,6 +44,7 @@ namespace LevelEditor.Editor
 
             _controllPanel.ResetClicked += OnResetClicked;
             _controllPanel.SaveClicked += OnSaveClicked;
+            _controllPanel.LoadClicked += OnLoadClicked;
             _controllPanel.EraseClicked += OnEraseModeClicked;
             _controllPanel.LevelNameChanged += OnLevelNameChanged;
         }
@@ -51,6 +57,7 @@ namespace LevelEditor.Editor
 
             _controllPanel.ResetClicked -= OnResetClicked;
             _controllPanel.SaveClicked -= OnSaveClicked;
+            _controllPanel.LoadClicked -= OnLoadClicked;
             _controllPanel.EraseClicked -= OnEraseModeClicked;
             _controllPanel.LevelNameChanged -= OnLevelNameChanged;
         }
@@ -143,6 +150,39 @@ namespace LevelEditor.Editor
                 return;
 
             _dataProvider.SaveLevel(new LevelData(_levelName, dtos));
+
+            var equals = _levels.Where(levelName => levelName.Equals(_levelName));
+
+            if (equals.Count() > 0)
+            {
+                return;
+            }
+
+            _levels.Add(_levelName);
+
+            _dataProvider.SaveLevelList(_levels);
+        }
+
+        private void OnLoadClicked()
+        {
+            var levelData = _dataProvider.LoadLevelData(_levelName);
+
+            _levelName = levelData.Name;
+
+            _editorData.ResetData();
+            _visualizer.DestroyAll();
+
+            for (int i = 0; i < levelData.BricksData.Length; i++)
+            {
+                BrickDTO brickData = levelData.BricksData[i];
+
+                var position = new Vector2(brickData.XPosition, brickData.YPosition);
+
+                _editorData.AddBrick(position, brickData.Type);
+                _editorData.TryAddPowerUp(position, brickData.FxType);
+            }
+
+            _visualizer.Setup(levelData);
         }
 
         private void OnEraseModeClicked()
@@ -150,7 +190,10 @@ namespace LevelEditor.Editor
             _eraseModeEnable = true;
         }
 
-        private void OnLevelNameChanged(string name) => _levelName = name;
+        private void OnLevelNameChanged(string name)
+        {
+            _levelName = name;
+        }
 
         private bool BrickChoused() => _currentBrick != BrickType.None && _currentMod == ModType.None;
         private bool ModChoused() => _currentBrick == BrickType.None && _currentMod != ModType.None;
