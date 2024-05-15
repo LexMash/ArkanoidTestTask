@@ -11,12 +11,14 @@ namespace Arkanoid.UI
 
         private readonly IBrickEventNotifier _notifier;
         private readonly Dictionary<BrickType, int> _scoreMap = new();
-        private readonly ScoreData _scoreData;
 
-        public ScoreController(IBrickEventNotifier notifier, BrickConfig config, ScoreData scoreData)
+        private int _currentScore;
+        private int _highScore;
+
+        public ScoreController(IBrickEventNotifier notifier, BrickConfig config, IReadOnlyGameData gameData)
         {
             _notifier = notifier;
-            _scoreData = scoreData;
+            _highScore = gameData.HighScore;
 
             FillDictionary(config);
 
@@ -25,30 +27,29 @@ namespace Arkanoid.UI
 
         public void ResetScore()
         {
-            _scoreData.CurrentScore = 0;
+            _currentScore = 0;
+
             Notify();
         }
 
         public void Dispose()
         {
             _notifier.OnBrickDestroyed -= OnDestroyBrick;
+
             _scoreMap.Clear();
         }
 
-        private void OnDestroyBrick(HitBrickData data)
-        {
-            UpdateScore(data);
-        }
+        private void OnDestroyBrick(HitBrickData data) => UpdateScore(data);
 
         private void UpdateScore(HitBrickData data)
         {
             if (_scoreMap.TryGetValue(data.BrickType, out int value))
             {
-                _scoreData.CurrentScore += value;
+                _currentScore += value;
 
-                if (_scoreData.CurrentScore > _scoreData.HighScore)
+                if (_currentScore > _highScore)
                 {
-                    _scoreData.HighScore = _scoreData.CurrentScore;
+                    _highScore = _currentScore;
                 }
 
                 Notify();
@@ -65,10 +66,11 @@ namespace Arkanoid.UI
             for (int i = 0; i < count; i++)
             {
                 BrickMetaData data = config.Datas[i];
+
                 _scoreMap[data.Type] = data.Score;
             }
         }
 
-        private void Notify() => ScoreChanged?.Invoke(new NewScoreData(_scoreData.HighScore, _scoreData.CurrentScore));
+        private void Notify() => ScoreChanged?.Invoke(new NewScoreData(_highScore, _currentScore));
     }
 }

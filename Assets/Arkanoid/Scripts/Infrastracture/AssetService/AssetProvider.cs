@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace Arkanoid.Infrastracture.AssetService
 {
@@ -25,13 +26,41 @@ namespace Arkanoid.Infrastracture.AssetService
 
         public async UniTask<T> LoadPrefab<T>(string reference) where T : MonoBehaviour
         {
-            AsyncOperationHandle<GameObject> hadle = Addressables.LoadAssetAsync<GameObject>(reference);
+            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(reference);
 
-            await hadle.Task;
+            await handle.Task;
 
-            _handleMap[reference] = hadle;
+            _handleMap[reference] = handle;
 
-            return hadle.Result.GetComponent<T>();
+            return handle.Result.GetComponent<T>();
+        }
+
+        public async UniTask<List<T>> LoadPrefabs<T>(string groupName) where T : MonoBehaviour
+        {
+            List<T> prefabs = new();
+
+            AsyncOperationHandle<IList<IResourceLocation>> groupHandle = Addressables.LoadResourceLocationsAsync(groupName);
+
+            await groupHandle.Task;          
+
+            IList<IResourceLocation> locationsList = groupHandle.Result;
+
+            for (int i = 0; i < locationsList.Count; i++)
+            {
+                IResourceLocation location = locationsList[i];
+
+                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(location.PrimaryKey);
+
+                await handle.Task;
+
+                T obj = handle.Result.GetComponent<T>();
+
+                prefabs.Add(obj);
+            }
+
+            _handleMap[groupName] = groupHandle;
+
+            return prefabs;
         }
 
         public void Release(string reference)
@@ -57,6 +86,15 @@ namespace Arkanoid.Infrastracture.AssetService
             }
 
             _handleMap.Clear();
+        }
+
+        private async UniTask<T> GetPrefab<T>(string reference, AsyncOperationHandle<GameObject> handle) where T : MonoBehaviour
+        {
+            handle = Addressables.LoadAssetAsync<GameObject>(reference);
+
+            await handle.Task;
+
+            return handle.Result.GetComponent<T>();
         }
     }
 }

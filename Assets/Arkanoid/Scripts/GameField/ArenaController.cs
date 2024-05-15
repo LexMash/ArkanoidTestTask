@@ -1,37 +1,33 @@
-﻿using Arkanoid.Infrastracture;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
+﻿using UnityEngine;
 
 namespace Arkanoid.GameField
 {
-    public class ArenaController
+    public class ArenaController : IArenaController
     {
         private readonly Arena _arena;
-        private readonly ArenaBackgroundCollection _backgrounds;
-        private readonly IAssetProvider _assetProvider;
+        private readonly BallKeeper _ballKeeper;
+        private readonly BackGroundService _backGroundService;
 
-        private Sprite _currentBackground;
-
-        public ArenaController(Arena arena, ArenaBackgroundCollection backgrounds, IAssetProvider assetProvider)
+        public ArenaController(Arena arena, BallKeeper ballKeeper, BackGroundService backGroundService)
         {
             _arena = arena;
-            _backgrounds = backgrounds;
-            _assetProvider = assetProvider;
-
-            ChangeBackground();
+            _ballKeeper = ballKeeper;
+            _backGroundService = backGroundService;           
         }
 
-        public void ChangeBackground()
+        public async void ChangeBackground()
         {
-            var index = Random.Range(0, _backgrounds.Sprites.Count);
+            Sprite background = await _backGroundService.GetBackground();
 
-            Addressables.Release(_currentBackground);
+            _arena.SetBackground(background);
+        }
 
-            var reference = _backgrounds.Sprites[index];
-
-            var sprite = Addressables.LoadAssetAsync<Sprite>(reference.AssetGUID).Result;
-
-            _currentBackground = sprite;
+        public void BallKeeperEnable(bool enabled)
+        {
+            if (enabled)
+                _ballKeeper.Enable();
+            else
+                _ballKeeper.Disable();
         }
     }
 }

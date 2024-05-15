@@ -3,9 +3,12 @@
 namespace Arkanoid.Gameplay.Data
 {
     [Serializable]
-    public class GameData
+    public class GameData : IReadOnlyGameData
     {
         public int CurrentLevelIndex;
-        public ScoreData ScoreData;
+        public int HighScore;
+
+        int IReadOnlyGameData.CurrentLevelIndex => CurrentLevelIndex;
+        int IReadOnlyGameData.HighScore => HighScore;
     }
 }

@@ -20,8 +20,12 @@ MonoBehaviour:
   - m_GUID: 95acf3e48c53ce844b70c1a368bf0af2
     m_Address: Ball
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f692b85af42f2445aa1c8be4dbf1834
+    m_Address: Assets/Arkanoid/Art/backgrounds_img.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 2db24fd0ce8a4ae48bc3e203df06155b, type: 2}

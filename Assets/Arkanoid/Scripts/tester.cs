@@ -14,6 +14,8 @@ using Arkanoid.Paddle.FX.Laser;
 using Arkanoid.Infrastracture.AssetService;
 using Arkanoid.Infrastracture;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 public class tester : MonoBehaviour
 {
@@ -40,26 +42,26 @@ public class tester : MonoBehaviour
     private AssetProvider assetProvider;
 
     public string reference;
-    private GameObject go;
+    private List<BrickView> brickPrefabs;
 
     private async void Start()
     {
         assetProvider = new();
+        brickPrefabs = await assetProvider.LoadPrefabs<BrickView>(reference);
 
-        go = await assetProvider.LoadAsset<GameObject>(reference);
-
-        go = Instantiate(go);
-
-        Debug.Log(go.name);
+        foreach (var brick in brickPrefabs)
+        {
+            Instantiate(brick);
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Destroy(go);
-            assetProvider.Release(reference);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Destroy(go);
+        //    assetProvider.Release(reference);
+        //}
     }
 
     //private void OnHitBrick(HitBrickData data)
