@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace Arkanoid.Infrastracture
 {
@@ -19,7 +20,7 @@ namespace Arkanoid.Infrastracture
             _assetProvider = assetProvider;
         }
 
-        public abstract void Init();
+        public abstract UniTask Init();
 
         public TObject Create(Vector3 position)
         {
@@ -28,7 +29,10 @@ namespace Arkanoid.Infrastracture
             if (_released.Count != 0)
             {
                 obj = _released[^1];
+
                 _released.Remove(obj);
+
+                obj.gameObject.SetActive(true);
             }
             else
             {
@@ -38,9 +42,7 @@ namespace Arkanoid.Infrastracture
             obj.Released += AddToReleased;
 
             _active.Add(obj);
-
-            obj.gameObject.SetActive(true);
-
+          
             return obj;
         }
 

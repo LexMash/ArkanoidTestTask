@@ -19,8 +19,10 @@ namespace Arkanoid.Paddle.FX.Laser
         private PaddleConfig _config;
         private ProjectileFactory _factory;
 
-        private Vector3 _initPosition;      
-        private Tween _tween;
+        private Vector3 _initPosition;
+        
+        private Tween _tweenEnable;
+        private Tween _tweenDisable;
 
         private float _counter;
         private float _fireInterval;
@@ -33,28 +35,33 @@ namespace Arkanoid.Paddle.FX.Laser
 
             _initPosition = _visualRoot.position;
 
-            _tween.SetAutoKill(false);
+            _tweenEnable.SetAutoKill(false);
+            _tweenDisable.SetAutoKill(false);
 
             _fireInterval = 60f/_config.BulletPerMinute;
 
-            _tween = _visualRoot.DOMoveY(_enabledPositionY, _animSpeed).SetEase(_ease).OnComplete(() => _isEnabled = true);
-            _tween.Pause();
+            _tweenEnable = _visualRoot.DOMoveY(_enabledPositionY, _animSpeed).SetEase(_ease).OnComplete(() => _isEnabled = true);
+            _tweenEnable.Pause();
+
+            _tweenDisable = _visualRoot.DOMoveY(_initPosition.y, _animSpeed).SetEase(_ease);
+            _tweenDisable.Pause();
         }
 
         public void Enable()
         {
-            _tween.Restart();
+            _tweenEnable.Restart();
         }
 
         public void Disable()
         {
-            _tween.Rewind();
+            _tweenDisable.Restart();
+
             _isEnabled = false;
         }
 
         private void Update()
         {
-            if (!_isEnabled)
+            if (_isEnabled == false)
                 return;
 
             _counter -= Time.deltaTime;
@@ -81,7 +88,8 @@ namespace Arkanoid.Paddle.FX.Laser
 
         private void OnDestroy()
         {
-            _tween.Kill();
+            _tweenEnable.Kill();
+            _tweenDisable.Kill();
         }
     }
 }

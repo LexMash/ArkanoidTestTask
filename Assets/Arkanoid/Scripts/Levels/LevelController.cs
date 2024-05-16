@@ -1,4 +1,5 @@
 ﻿using Arkanoid.Bricks;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,28 +35,28 @@ namespace Arkanoid.Levels
             _brickService.AllBricksRemoved += AllBricksRemoved;
         }
 
-        public async void Init()
+        public async UniTask Init()
         {
             _levels = await _dataService.LoadLevelList();
         }
 
-        public async void Load(int index)
+        public async UniTask Load(int index)
         {
-            index = Mathf.Clamp(index, 0, _levels.Count - 1); //залушка, что бы не падало
+            index = Mathf.Clamp(index, 0, _levels.Count - 1); //заглушка, что бы не падало
 
             string levelName = _levels[index];
 
             if (_currentLevel != null)
             {
+                if (TryLoadSameLevel(levelName))
+                {
+                    Restart();
+
+                    Debug.Log($"You are trying to load the same level {levelName} again");
+                    return;
+                }
+
                 _builder.DestroyAllBuilded();
-            }
-
-            if (TryLoadSameLevel(levelName))
-            {
-                Restart();
-
-                Debug.Log($"You are trying to load the same level {levelName} again");
-                return;
             }
 
             _currentLevel = await _dataService.LoadLevelData(levelName);

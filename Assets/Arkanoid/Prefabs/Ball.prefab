@@ -246,7 +246,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Mover>k__BackingField: {fileID: 5590345876775616767}
-  <CollisionDetector>k__BackingField: {fileID: 4311704838273740869}
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  _paddleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  _brickLayer:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!114 &5590345876775616767
 MonoBehaviour:
   m_ObjectHideFlags: 0

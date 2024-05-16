@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 
 namespace Arkanoid.Levels
 {
@@ -6,8 +7,8 @@ namespace Arkanoid.Levels
     {
         event Action<string> LevelLoaded;
 
-        void Init();
-        void Load(int levelIndex);
+        UniTask Init();
+        UniTask Load(int levelIndex);
         void MakeBricksHollow();
         void MakeBricksSolid();
         void Restart();

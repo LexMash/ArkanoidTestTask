@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
-using Arkanoid.Gameplay.Mods;
+using UnityEngine;
 
 namespace Arkanoid.Gameplay
 {
@@ -25,7 +25,6 @@ namespace Arkanoid.Gameplay
             _modData = config.ModDatas;
             _modificators = modificators;
             _notifier = notifier;
-
 
             _modificators.Init();
             _notifier.PowerUPTaken += OnPowerUPTaken;
@@ -107,7 +106,6 @@ namespace Arkanoid.Gameplay
 
                 if (_modMap.TryGetValue(canceledType, out IModificator canceled))
                 {
-                    canceled.Rollback();
                     RemoveMod(canceled);
                 }
             }
@@ -119,9 +117,13 @@ namespace Arkanoid.Gameplay
 
             _modMap.Remove(modificator.Type);
 
+            modificator.Rollback();
+
             ModificatorData data = GetData(modificator.Type);
 
             ModRemoved?.Invoke(data);
+
+            Debug.Log($"{modificator.Type} removed");
         }
 
         private ModificatorData GetData(ModType type)

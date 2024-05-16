@@ -1,7 +1,5 @@
 ﻿using Arkanoid.Ball;
 using System;
-using System.Data;
-using UnityEditor.VersionControl;
 
 namespace Arkanoid.UI.LifeBar
 {
@@ -47,7 +45,7 @@ namespace Arkanoid.UI.LifeBar
 
         public void Dispose()
         {
-            _ballDestroyNotificator.BallDestroed += OnBallDestroed;
+            _ballDestroyNotificator.BallDestroed -= OnBallDestroed;
         }
 
         private void OnBallDestroed()

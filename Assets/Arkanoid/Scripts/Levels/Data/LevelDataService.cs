@@ -35,7 +35,7 @@ namespace Arkanoid.Levels
 
             using (UnityWebRequest www = UnityWebRequest.Get(path))
             {
-                await UniTask.WaitUntil(() => www.SendWebRequest().webRequest.isDone);
+                await UniTask.WaitWhile(() => www.SendWebRequest().webRequest.isDone);
 
                 if (www.result == UnityWebRequest.Result.Success)
                 {

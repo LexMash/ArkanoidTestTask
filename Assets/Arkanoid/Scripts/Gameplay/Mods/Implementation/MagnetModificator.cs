@@ -24,18 +24,20 @@ namespace Arkanoid.Gameplay.Mods.Implementation
         public void Apply()
         {
             _input.ActionPerformed += OnActionPerformed;
-            _ballController.MagnetModeEnable(true);
-        }
 
-        private void OnActionPerformed()
-        {
-            _ballController.ReleaseMagnet();
+            _ballController.MagnetModeEnable(true);
         }
 
         public void Rollback()
         {
             _input.ActionPerformed -= OnActionPerformed;
+
             _ballController.MagnetModeEnable(false);
+        }
+
+        private void OnActionPerformed()
+        {
+            _ballController.ReleaseMagnet();
         }
     }
 }

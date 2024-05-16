@@ -4,6 +4,7 @@ using Arkanoid.Paddle.FX.Configs;
 using Arkanoid.PowerUPs;
 using System;
 using System.Linq;
+using UnityEngine;
 
 namespace Arkanoid.Gameplay.Mods.Implementation
 {

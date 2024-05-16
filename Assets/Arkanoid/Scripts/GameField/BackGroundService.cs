@@ -24,7 +24,7 @@ namespace Arkanoid.GameField
         {
             int index = UnityEngine.Random.Range(0, _backgrounds.Sprites.Count);
 
-            if (_currentReference.Equals(string.Empty) != false)
+            if (_currentReference != string.Empty)
             {
                 _assetProvider.Release(_currentReference);
             }
@@ -36,8 +36,6 @@ namespace Arkanoid.GameField
 
         public void Dispose()
         {
-            _assetProvider.Release(_currentReference);
-
             _currentReference = null;
         }
     }

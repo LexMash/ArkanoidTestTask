@@ -45,7 +45,7 @@ public class InitializeState : GameStateBase
         _livesController = livesController;
     }
 
-    public override void Enter()
+    public override async void Enter()
     {
         base.Enter();
 
@@ -56,13 +56,12 @@ public class InitializeState : GameStateBase
         _scoreController.BindData(_gameDataProvider.Data);
         _scoreController.ResetScore();
 
-        _ballFactory.Init();
-        _projectileFactory.Init();
-        _brickFactory.Init();
-        _powerUPFactory.Init();
-
-        _levelController.Init();
-
+        await _levelController.Init();
+        await _ballFactory.Init();
+        await _projectileFactory.Init();
+        await _powerUPFactory.Init();
+        await _brickFactory.Init();
+        
         _livesController.SetInitState();
 
         _stateChangeProvider.ChangeState(GameStateType.LevelLoad);

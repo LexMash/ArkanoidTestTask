@@ -1,5 +1,6 @@
 ﻿using Arkanoid.Infrastracture;
 using Arkanoid.Infrastracture.Pool;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,11 +20,9 @@ namespace Arkanoid.PowerUPs
         public PowerUPFactory(IAssetProvider assetProvider)
         {
             _assetProvider = assetProvider;
-
-            Init();
         }
 
-        public async void Init()
+        public async UniTask Init()
         {
             List<PowerUpView> powerUPs = await _assetProvider.LoadPrefabs<PowerUpView>(REFERENCE);
 
@@ -89,15 +88,6 @@ namespace Arkanoid.PowerUPs
 
             _prefabMap.Clear();
             _released.Clear();
-
-            foreach(var powerUp in _active)
-            {
-                powerUp.Released -= AddToReleased;
-
-                UnityEngine.Object.Destroy(powerUp.gameObject);
-            }
-
-            _assetProvider.Release(REFERENCE);
 
             _active.Clear();
         }

@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
 namespace Arkanoid.Paddle
 {
@@ -17,7 +18,8 @@ namespace Arkanoid.Paddle
 
         private PaddleConfig _config;
         private Tween _scaleTween;
-       
+
+        [Inject]
         public void Construct(PaddleConfig config)
         {
             _config = config;

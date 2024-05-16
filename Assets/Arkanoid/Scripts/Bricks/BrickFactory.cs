@@ -1,6 +1,7 @@
 ﻿using Arkanoid.Bricks;
 using Arkanoid.Infrastracture;
 using Arkanoid.Infrastracture.Pool;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace Arkanoid.Levels
             _assetProvider = assetProvider;
         }
 
-        public async void Init()
+        public async UniTask Init()
         {
             List<BrickView> brickViews = await _assetProvider.LoadPrefabs<BrickView>(REFERENCE);
 
@@ -48,6 +49,7 @@ namespace Arkanoid.Levels
             else
             {
                 BrickView prefab = _prefabMap[type];
+
                 brick = Intantiate(prefab, position);
             }
 
@@ -87,15 +89,6 @@ namespace Arkanoid.Levels
 
             _prefabMap.Clear();
             _released.Clear();
-
-            foreach (var brick in _active)
-            {
-                brick.Released -= AddToReleased;
-
-                UnityEngine.Object.Destroy(brick.gameObject);
-            }
-
-            _assetProvider.Release(REFERENCE);
 
             _active.Clear();
         }

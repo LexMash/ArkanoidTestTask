@@ -18,13 +18,13 @@ public sealed class LoadLevelState : GameStateBase
         _levelController = levelController;
     }
 
-    public override void Enter()
+    public override async void Enter()
     {
         base.Enter();
 
         int index = _gameDataProvider.Data.CurrentLevelIndex;
 
-        _levelController.Load(index);
+        await _levelController.Load(index);
 
         _stateChangeProvider.ChangeState(GameStateType.GamePlay);
     }

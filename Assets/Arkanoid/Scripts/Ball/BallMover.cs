@@ -12,6 +12,7 @@ namespace Arkanoid.Ball
         public Vector2 Velocity => _rigidbody2D.velocity;
 
         private float _speed = 0f;
+        private bool _movementEnable;
 
         public void SetSpeed(float speed)
         {
@@ -23,8 +24,17 @@ namespace Arkanoid.Ball
             _rigidbody2D.velocity = direction.normalized;
         }
 
+        public void MovementEnable(bool enable)
+        {
+            _rigidbody2D.isKinematic = !enable;
+            _movementEnable = enable;
+        }
+
         private void FixedUpdate()
         {
+            if (!_movementEnable)
+                return;
+
             _rigidbody2D.velocity = _rigidbody2D.velocity.normalized * _speed; //пожалуй, самый странный способ ограничить скорость...
         }
     }

@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Arkanoid.Installers
 {
-    public class MofificatorsHolderInstaller : MonoInstaller
+    public class ModificatorsHolderInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {

@@ -37,7 +37,7 @@ namespace Arkanoid.Input
             if (!_isInit)
                 return;
 
-            _paddle.Velocity = _velocity;
+            //_paddle.Velocity = _velocity;
         }
 
         private void Update()

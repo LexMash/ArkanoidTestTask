@@ -1,4 +1,5 @@
 ﻿using Arkanoid.Infrastracture;
+using Cysharp.Threading.Tasks;
 
 namespace Arkanoid.Ball
 {
@@ -10,7 +11,7 @@ namespace Arkanoid.Ball
         {
         }
 
-        public async override void Init()
+        public async override UniTask Init()
         {
             _objPrefab = await _assetProvider.LoadPrefab<BallView>(REFERENCE);
         }

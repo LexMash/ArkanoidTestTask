@@ -10,8 +10,13 @@ namespace Arkanoid.Bricks
         public event Action<HitBrickData> BrickHitted;
         public event Action<HitBrickData> BrickDestroyed;
 
-        private readonly List<BrickMetaData> _metaData;
+        private readonly IReadOnlyList<BrickMetaData> _metaData;
         private Dictionary<BrickView, BrickData> _brickMap = new();
+
+        public BrickService(BrickConfig config)
+        {
+            _metaData = config.Datas;
+        }
 
         public void Init(BrickView[] bricks, BrickDTO[] brickDTOs)
         {
@@ -31,20 +36,6 @@ namespace Arkanoid.Bricks
                 BrickView brick = bricks[i];
 
                 _brickMap[brick] = brickData;
-
-                Subscribe(brick);
-            }
-        }
-
-        public void Init(Dictionary<BrickView, BrickData> brickMap)
-        {
-            ClearExistingData();
-
-            _brickMap = brickMap;
-
-            foreach (KeyValuePair<BrickView, BrickData> kvp in _brickMap)
-            {
-                BrickView brick = kvp.Key;
 
                 Subscribe(brick);
             }

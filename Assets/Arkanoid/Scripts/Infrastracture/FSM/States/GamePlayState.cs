@@ -55,10 +55,11 @@ public class GamePlayState : GameStateBase
         _arenaController.ChangeBackground();
 
         _ballController.SetInitialState();
-        _paddleController.SetInitialState();
-        _scoreController.ResetScore();
+
+        _paddleController.SetInitialState();      
 
         _input.ActionPerformed += OnActionPerformed;
+        _ballController.BallDestroed += OnBallDestroed;
         _livesNotificator.NoMoreLives += OnNoMoreLives;
         _levelsEventNotifier.LevelCompleted += OnLevelCompleted;
     }
@@ -70,9 +71,9 @@ public class GamePlayState : GameStateBase
         _input.Disable();
 
         _gameDataProvider.Save();
+        //_ballController.DestroyExtraBalls();
 
-        _modsController.RemoveAllApplyedMods();
-
+        _ballController.BallDestroed -= OnBallDestroed;
         _livesNotificator.NoMoreLives -= OnNoMoreLives;
         _levelsEventNotifier.LevelCompleted -= OnLevelCompleted;
     }
@@ -82,6 +83,12 @@ public class GamePlayState : GameStateBase
         _ballController.FirstLaunch();
 
         _input.ActionPerformed -= OnActionPerformed;
+    }
+
+    private void OnBallDestroed()
+    {
+        _ballController.SetInitialState();
+        _modsController.RemoveAllApplyedMods();       
     }
 
     private void OnLevelCompleted()

@@ -14,6 +14,7 @@ namespace Arkanoid.Gameplay
         public void Start(float time)
         {
             _isCounting = true;
+
             _time = time;
         }
 
@@ -31,9 +32,12 @@ namespace Arkanoid.Gameplay
 
             _time -= timeDelta;
 
+            Debug.Log(_time);
+
             if (TimeOut())
             {
                 _isCounting = false;
+
                 Completed?.Invoke();
             }
         }

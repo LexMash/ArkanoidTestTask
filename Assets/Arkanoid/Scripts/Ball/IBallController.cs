@@ -8,7 +8,8 @@ namespace Arkanoid.Ball
 
         int BallsCount { get; }
 
-        public void FirstLaunch();
+        void FirstLaunch();
+        void DestroyExtraBalls();
         void AddBall();
         void SetInitialState();
         void ResetSpeed();

@@ -8,7 +8,7 @@ namespace Arkanoid.Paddle
         [field: SerializeField] public WidthChanger WidthChanger { get; private set; }
         [field: SerializeField] public CollisionDetector CollisionDetector { get; private set; }
         [field: SerializeField] public Animator Animator { get; private set; }
-        [field: SerializeField] public Transform BallInitialPosition { get; private set; }
+        [field: SerializeField] public Transform Transform { get; private set; }
         [field: SerializeField] public LaserGun LaserGun { get; private set; }
 
         [Space]
@@ -16,12 +16,10 @@ namespace Arkanoid.Paddle
 
         public float Width => WidthChanger.Width;
 
-        public Transform Transform => transform;
-
         public Vector2 CurrentPosition
         {
-            get => _rigidbody.position;
-            set => _rigidbody.position = value;
+            get => transform.position;
+            set => transform.position = value;
         }
 
         public Vector2 Velocity
