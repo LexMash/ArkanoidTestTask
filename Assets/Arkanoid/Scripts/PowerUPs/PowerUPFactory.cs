@@ -8,6 +8,8 @@ namespace Arkanoid.PowerUPs
 {
     public class PowerUPFactory : IDisposable
     {
+        private const string REFERENCE = "powerUPs";
+
         private readonly IAssetProvider _assetProvider;
 
         private readonly Dictionary<ModType, PowerUpView> _prefabMap = new();
@@ -17,15 +19,21 @@ namespace Arkanoid.PowerUPs
         public PowerUPFactory(IAssetProvider assetProvider)
         {
             _assetProvider = assetProvider;
+
+            Load();
         }
 
-        //public async void Initialize()
-        //{
-        //    _handle = Addressables.LoadAssetAsync<GameObject>("TouchFx");
-        //    await _handle.Task;
-        //    var go = _handle.Result;
-        //    _fx = go.GetComponent<UIVisualFxBase>();
-        //}
+        private async void Load()
+        {
+            List<PowerUpView> powerUPs = await _assetProvider.LoadPrefabs<PowerUpView>(REFERENCE);
+
+            for (int i = 0; i < powerUPs.Count; i++)
+            {
+                PowerUpView powerUP = powerUPs[i];
+
+                _prefabMap[powerUP.ModType] = powerUP;
+            }
+        }
 
         public PowerUpView Create(ModType type, Vector2 position)
         {
@@ -50,11 +58,6 @@ namespace Arkanoid.PowerUPs
             _active.Add(powerUp);
 
             return powerUp;
-        }
-
-        private static PowerUpView Intantiate(PowerUpView prefab, Vector2 position)
-        {
-            return UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity).GetComponent<PowerUpView>();
         }
 
         private void AddToReleased(IReusable reusable)
@@ -94,7 +97,14 @@ namespace Arkanoid.PowerUPs
                 UnityEngine.Object.Destroy(powerUp.gameObject);
             }
 
+            _assetProvider.Release(REFERENCE);
+
             _active.Clear();
+        }
+
+        private static PowerUpView Intantiate(PowerUpView prefab, Vector2 position)
+        {
+            return UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
         }
     }
 }

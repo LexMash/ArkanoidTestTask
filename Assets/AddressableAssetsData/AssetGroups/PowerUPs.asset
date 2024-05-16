@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: PowerUPs
+  m_EditorClassIdentifier: 
+  m_GroupName: PowerUPs
+  m_Data:
+    m_SerializedData: []
+  m_GUID: b755ef9abb8b30845b43002c79f18a04
+  m_SerializeEntries:
+  - m_GUID: 23200c32e4241dc47943c84dd2451df7
+    m_Address: EnergyBall
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - powerUPs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66fe75fc5f5c22c45b3b870b7c55c557
+    m_Address: Expand
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - powerUPs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e33aa3597f9c6349bf8c28127a323b0
+    m_Address: Magnet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - powerUPs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7fd8985717e07945be554dd75451aee
+    m_Address: Shrink
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - powerUPs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 559bb0fd111a18d48b8c315c05b2476f
+    m_Address: SlowBall
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - powerUPs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a559575893b947c4488054801f947247
+    m_Address: SplitBall
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - powerUPs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd7be0c14eff6d3409107592adfdd2f8
+    m_Address: LaserGun
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - powerUPs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 704d9ba92d3a03046ae0152da156bda0
+    m_Address: BallKeeper
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - powerUPs
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 2db24fd0ce8a4ae48bc3e203df06155b, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e95b56ca80fb989448de4b9683532920, type: 2}
+    - {fileID: 11400000, guid: 8e11a906861416d45a2f4e6dcef5d2fb, type: 2}

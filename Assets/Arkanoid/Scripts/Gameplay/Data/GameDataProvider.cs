@@ -7,29 +7,39 @@ namespace Arkanoid
     public sealed class GameDataProvider : IDisposable, IGameDataProvider
     {
         private const string FILE_NAME = "GameData.dat";
-
-        private readonly IGameEndNotifier _notifier;
+      
         private readonly ISaveLoadService _saveLoadService;
+        private readonly IGameStateNotifier _gameStateNotifier;
         private readonly IScoreNotifier _scoreNotifier;
+
         private GameData _data;
 
-        public GameDataProvider(ISaveLoadService saveLoadService, IGameEndNotifier notifier, IScoreNotifier scoreNotifier)
+        public GameDataProvider(ISaveLoadService saveLoadService, IGameStateNotifier gameStateNotifier, IScoreNotifier scoreNotifier)
         {
-            _notifier = notifier;
             _saveLoadService = saveLoadService;
+            _gameStateNotifier = gameStateNotifier;         
             _scoreNotifier = scoreNotifier;
 
-            _notifier.LevelCompleted += OnLevelCompleted;
-            _notifier.GameOver += OnGameOver;
+            _gameStateNotifier.LevelCompleted += OnLevelCompleted;
             _scoreNotifier.ScoreChanged += OnScoreChanged;
+
+            _data = null;
         }
 
         public IReadOnlyGameData Data => _data;
 
+        public void Save() => _saveLoadService.Save(_data, FILE_NAME);
+
+        public void Load()
+        {
+            _data = _saveLoadService.Load<GameData>(FILE_NAME);
+
+            _data ??= new GameData();
+        }
+
         public void Dispose()
         {
-            _notifier.LevelCompleted -= OnLevelCompleted;
-            _notifier.GameOver -= OnGameOver;
+            _gameStateNotifier.LevelCompleted -= OnLevelCompleted;
             _scoreNotifier.ScoreChanged -= OnScoreChanged;
 
             _data = null;
@@ -38,28 +48,12 @@ namespace Arkanoid
         private void OnLevelCompleted()
         {
             _data.CurrentLevelIndex++;
-
-            Save();
-        }
-
-        private void OnGameOver()
-        {
-            Save();
         }
 
         private void OnScoreChanged(NewScoreData newData)
         {
             if (newData.HighScore > _data.HighScore)
                 _data.HighScore = newData.HighScore;
-        }
-
-        private void Save() => _saveLoadService.Save(_data, FILE_NAME);
-
-        private void Load()
-        {
-            _data = _saveLoadService.Load<GameData>(FILE_NAME);
-
-            _data ??= new GameData();
         }
     }
 }

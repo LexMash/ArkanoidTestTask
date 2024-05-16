@@ -1,5 +1,4 @@
-﻿using Arkanoid.PowerUPs;
-using Arkanoid.Paddle.FX.Configs;
+﻿using Arkanoid.Paddle.FX.Configs;
 using System;
 
 namespace Arkanoid.Gameplay

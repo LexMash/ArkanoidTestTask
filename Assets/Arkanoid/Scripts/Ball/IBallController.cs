@@ -8,11 +8,11 @@ namespace Arkanoid.Ball
 
         int BallsCount { get; }
 
+        public void FirstLaunch();
         void AddBall();
         void SetInitialState();
         void ResetSpeed();
         void SpeedDown();
-        void FirstLaunch();
         void MagnetModeEnable(bool enable);
         void ReleaseMagnet();
     }

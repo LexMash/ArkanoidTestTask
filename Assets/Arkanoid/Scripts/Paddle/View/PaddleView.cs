@@ -2,7 +2,7 @@
 
 namespace Arkanoid.Paddle
 {
-    public class PaddleView : MonoBehaviour, IMovable
+    public class PaddleView : MonoBehaviour, IMovable, IBallInitialTransform
     {
         [field: SerializeField] public WidthChanger WidthChanger { get; private set; }
         [field: SerializeField] public CollisionDetector CollisionDetector { get; private set; }
@@ -14,6 +14,8 @@ namespace Arkanoid.Paddle
 
         public float Width => WidthChanger.Width;
 
+        public Transform Transform => transform;
+
         public Vector2 CurrentPosition
         {
             get => _rigidbody.position;
@@ -24,6 +26,6 @@ namespace Arkanoid.Paddle
         {
             get => _rigidbody.velocity;
             set => _rigidbody.velocity = value;
-        }
+        }      
     }
 }

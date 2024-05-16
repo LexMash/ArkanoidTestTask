@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7f692b85af42f2445aa1c8be4dbf1834
-    m_Address: Assets/Arkanoid/Art/backgrounds_img.png
+    m_Address: backgrounds_img
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

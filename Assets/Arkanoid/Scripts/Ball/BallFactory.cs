@@ -1,17 +1,19 @@
 ﻿using Arkanoid.Infrastracture;
-using Arkanoid.Paddle.FX.Laser;
 
 namespace Arkanoid.Ball
 {
     public class BallFactory : SimpleFactory<BallView>
     {
+        private const string REFERENCE = "Ball";
+
         public BallFactory(IAssetProvider assetProvider) : base(assetProvider)
         {
+            LoadPrefab();
         }
 
-        protected override void LoadPrefab()
+        protected async override void LoadPrefab()
         {
-            //_objPrefab = _assetProvider.Load
+            _objPrefab = await _assetProvider.LoadPrefab<BallView>(REFERENCE);
         }
     }
 }

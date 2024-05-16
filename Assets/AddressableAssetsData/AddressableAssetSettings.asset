@@ -47,6 +47,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fd967b98d2a83864f852755c1e992e64, type: 2}
   - {fileID: 11400000, guid: 51cf393b5b5e88d448f8c7c210658ae3, type: 2}
   - {fileID: 11400000, guid: e9d8e359e89166344b74e43926d81cc8, type: 2}
+  - {fileID: 11400000, guid: 701ad11082664574b84c2171dfd99b22, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -89,6 +90,7 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - bricks
+    - powerUPs
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: caf301e1325717b4bba7078a0b935f3e, type: 2}

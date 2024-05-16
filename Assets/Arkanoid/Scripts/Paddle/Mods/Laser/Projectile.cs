@@ -18,36 +18,39 @@ namespace Arkanoid.Paddle.FX.Laser
         private void OnEnable()
         {
             _visual.SetActive(true);
+
             _notCollisioned = true;
         }
 
         private void Update()
         {
             if(_notCollisioned)
-                transform.position += Vector3.up * _speed * Time.deltaTime;
+                transform.position += _speed * Time.deltaTime * Vector3.up;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
             _notCollisioned = false;
 
-            _visual.SetActive(false);
-            gameObject.SetActive(false);
-            Released?.Invoke(this);//test
+            _visual.SetActive(false);                    
 
-            _destroyFx.Played += OnPlayed;
-            _destroyFx.Play();
+            if(_destroyFx != null)
+            {
+                _destroyFx.Played += OnPlayed;
+                _destroyFx.Play();
+            }
+            else
+            {
+                gameObject.SetActive(false);
+                Released?.Invoke(this);
+            }              
         }
 
         private void OnPlayed()
         {
             _destroyFx.Played -= OnPlayed;
-            Released?.Invoke(this);
-        }
 
-        private void Reset()
-        {
-            _destroyFx = GetComponent<DestroyFxBase>();
+            Released?.Invoke(this);
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IArenaController
     {
-        void BallKeeperEnable(bool enabled);
+        void KeepBall(bool enabled);
         void ChangeBackground();
     }
 }

@@ -22,9 +22,9 @@ namespace Arkanoid.GameField
             _arena.SetBackground(background);
         }
 
-        public void BallKeeperEnable(bool enabled)
+        public void KeepBall(bool keep)
         {
-            if (enabled)
+            if (keep)
                 _ballKeeper.Enable();
             else
                 _ballKeeper.Disable();

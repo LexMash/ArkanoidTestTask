@@ -5,6 +5,8 @@ namespace Arkanoid.UI
 {
     public class ScorePanel : MonoBehaviour
     {
+        private const string SCORE_FORMAT = "{0:00#\\.###\\.###\\.###}";
+
         [SerializeField] private TextMeshProUGUI _highScoreTMesh;
         [SerializeField] private TextMeshProUGUI _currentScoreTMesh;
 
@@ -18,8 +20,8 @@ namespace Arkanoid.UI
 
         private void OnScoreChanged(NewScoreData data)
         {
-            _highScoreTMesh.text = data.HighScore.ToString();
-            _currentScoreTMesh.text = data.CurrentScore.ToString();
+            _highScoreTMesh.text = "HS " + string.Format(SCORE_FORMAT, data.HighScore);
+            _currentScoreTMesh.text = "CS " + string.Format(SCORE_FORMAT, data.CurrentScore);
         }
 
         private void OnDestroy()

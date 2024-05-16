@@ -25,9 +25,7 @@ namespace Arkanoid.Levels
 
                 var position = new Vector2(brickData.XPosition, brickData.YPosition);
 
-                BrickView brick = _factory.Create(brickData.Type);
-
-                brick.transform.position = position;
+                BrickView brick = _factory.Create(brickData.Type, position);
 
                 _bricksObjects[i] = brick;
             }
@@ -58,7 +56,7 @@ namespace Arkanoid.Levels
 
                 if (brick.gameObject.activeSelf)
                 {
-                    brick.gameObject.SetActive(false);
+                    brick.Destroy(false);   
                 }
             }
 

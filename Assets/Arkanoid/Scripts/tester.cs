@@ -16,6 +16,8 @@ using Arkanoid.Infrastracture;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
+using Arkanoid;
+using Arkanoid.Levels;
 
 public class tester : MonoBehaviour
 {
@@ -41,18 +43,15 @@ public class tester : MonoBehaviour
     private ProjectileFactory projectileFactory;
     private AssetProvider assetProvider;
 
-    public string reference;
-    private List<BrickView> brickPrefabs;
 
-    private async void Start()
+    private void Start()
     {
-        assetProvider = new();
-        brickPrefabs = await assetProvider.LoadPrefabs<BrickView>(reference);
+        var gameDataProvider = new GameDataProvider(new JsonSaveLoadService(new NewtonJsonSerializator()), null, null);
 
-        foreach (var brick in brickPrefabs)
-        {
-            Instantiate(brick);
-        }
+        gameDataProvider.Load();
+
+        Debug.Log(gameDataProvider.Data.CurrentLevelIndex);
+        gameDataProvider.Save();
     }
 
     private void Update()

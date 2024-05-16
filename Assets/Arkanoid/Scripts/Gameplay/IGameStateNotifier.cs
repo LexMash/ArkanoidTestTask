@@ -2,7 +2,7 @@
 
 namespace Arkanoid
 {
-    public interface IGameEndNotifier
+    public interface IGameStateNotifier
     {
         event Action LevelCompleted;
         event Action GameOver;

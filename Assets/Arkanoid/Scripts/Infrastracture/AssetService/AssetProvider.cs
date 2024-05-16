@@ -15,13 +15,13 @@ namespace Arkanoid.Infrastracture.AssetService
 
         public async UniTask<T> LoadAsset<T>(string reference) where T : class
         {
-            AsyncOperationHandle<T> hadle = Addressables.LoadAssetAsync<T>(reference);
+            AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(reference);
 
-            await hadle.Task;
+            await handle.Task;
 
-            _handleMap[reference] = hadle;
+            CashHandle(handle, reference);
 
-            return hadle.Result;
+            return handle.Result;
         }
 
         public async UniTask<T> LoadPrefab<T>(string reference) where T : MonoBehaviour
@@ -30,10 +30,10 @@ namespace Arkanoid.Infrastracture.AssetService
 
             await handle.Task;
 
-            _handleMap[reference] = handle;
+            CashHandle(handle, reference);
 
             return handle.Result.GetComponent<T>();
-        }
+        }       
 
         public async UniTask<List<T>> LoadPrefabs<T>(string groupName) where T : MonoBehaviour
         {
@@ -53,12 +53,12 @@ namespace Arkanoid.Infrastracture.AssetService
 
                 await handle.Task;
 
-                T obj = handle.Result.GetComponent<T>();
+                T prefab = handle.Result.GetComponent<T>();
 
-                prefabs.Add(obj);
+                prefabs.Add(prefab);
             }
 
-            _handleMap[groupName] = groupHandle;
+            CashHandle(groupHandle, groupName);
 
             return prefabs;
         }
@@ -87,6 +87,8 @@ namespace Arkanoid.Infrastracture.AssetService
 
             _handleMap.Clear();
         }
+
+        private void CashHandle(AsyncOperationHandle handle, string reference) => _handleMap[reference] = handle;
 
         private async UniTask<T> GetPrefab<T>(string reference, AsyncOperationHandle<GameObject> handle) where T : MonoBehaviour
         {

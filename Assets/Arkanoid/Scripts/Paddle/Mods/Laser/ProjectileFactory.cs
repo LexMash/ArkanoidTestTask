@@ -4,18 +4,16 @@ namespace Arkanoid.Paddle.FX.Laser
 {
     public class ProjectileFactory : SimpleFactory<Projectile>
     {
+        private const string REFERENCE = "Projectile";
+
         public ProjectileFactory(IAssetProvider assetProvider) : base(assetProvider)
         {
+            LoadPrefab();
         }
 
-        protected override void LoadPrefab()
+        protected async override void LoadPrefab()
         {
-            //TODO
-        }
-
-        public void Set(Projectile projectile)
-        {
-            _objPrefab = projectile;
+            _objPrefab = await _assetProvider.LoadPrefab<Projectile>(REFERENCE);
         }
     }
 }
