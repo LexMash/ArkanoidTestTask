@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Arkanoid.UI
 {
-    public class ScoreController : IDisposable, IScoreNotifier
+    public class ScoreController : IDisposable, IScoreNotifier, IScoreController
     {
         public event Action<NewScoreData> ScoreChanged;
 
@@ -15,14 +15,18 @@ namespace Arkanoid.UI
         private int _currentScore;
         private int _highScore;
 
-        public ScoreController(IBrickEventNotifier notifier, BrickConfig config, IReadOnlyGameData gameData)
+        public ScoreController(IBrickEventNotifier notifier, BrickConfig config)
         {
             _notifier = notifier;
-            _highScore = gameData.HighScore;
 
             FillDictionary(config);
 
             _notifier.OnBrickDestroyed += OnDestroyBrick;
+        }
+
+        public void BindData(IReadOnlyGameData gameData)
+        {
+            _highScore = gameData.HighScore;
         }
 
         public void ResetScore()

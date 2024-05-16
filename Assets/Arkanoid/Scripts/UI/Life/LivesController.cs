@@ -5,7 +5,7 @@ using UnityEditor.VersionControl;
 
 namespace Arkanoid.UI.LifeBar
 {
-    public class LivesController : IDisposable, ILivesNotificator
+    public class LivesController : IDisposable, ILivesNotifier
     {
         public event Action NoMoreLives;
         public event Action LifeLost;
@@ -14,11 +14,11 @@ namespace Arkanoid.UI.LifeBar
         private const int MAX_LIVES = 4;
         private const int DEFAULT_LIVES = 2; //это значение конечно должно прийти из вне, но пока так
 
-        private readonly IBallDestroyNotificator _ballDestroyNotificator;
+        private readonly IBallDestroyNotifier _ballDestroyNotificator;
 
         private int _counter;
 
-        public LivesController(IBallDestroyNotificator ballDestroyNotificator)
+        public LivesController(IBallDestroyNotifier ballDestroyNotificator)
         {
             _ballDestroyNotificator = ballDestroyNotificator;
 

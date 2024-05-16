@@ -20,10 +20,10 @@ namespace Arkanoid.PowerUPs
         {
             _assetProvider = assetProvider;
 
-            Load();
+            Init();
         }
 
-        private async void Load()
+        public async void Init()
         {
             List<PowerUpView> powerUPs = await _assetProvider.LoadPrefabs<PowerUpView>(REFERENCE);
 

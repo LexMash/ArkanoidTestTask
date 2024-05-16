@@ -8,10 +8,9 @@ namespace Arkanoid.Ball
 
         public BallFactory(IAssetProvider assetProvider) : base(assetProvider)
         {
-            LoadPrefab();
         }
 
-        protected async override void LoadPrefab()
+        public async override void Init()
         {
             _objPrefab = await _assetProvider.LoadPrefab<BallView>(REFERENCE);
         }

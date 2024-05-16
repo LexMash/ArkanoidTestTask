@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Arkanoid.UI
 {
@@ -12,6 +13,7 @@ namespace Arkanoid.UI
 
         private IScoreNotifier _notifier;
 
+        [Inject]
         public void Construct(IScoreNotifier scoreNotifier)
         {
             _notifier = scoreNotifier;

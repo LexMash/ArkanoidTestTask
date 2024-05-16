@@ -39,11 +39,6 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
     m_EditorAssetChanged: 1
   - m_AssetGUID: 7f692b85af42f2445aa1c8be4dbf1834
-    m_SubObjectName: backgrounds_5
-    m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_EditorAssetChanged: 1
-  - m_AssetGUID: 7f692b85af42f2445aa1c8be4dbf1834
     m_SubObjectName: backgrounds_6
     m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null

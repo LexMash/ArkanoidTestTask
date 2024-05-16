@@ -20,7 +20,7 @@ namespace Arkanoid
             _gameStateNotifier = gameStateNotifier;         
             _scoreNotifier = scoreNotifier;
 
-            _gameStateNotifier.LevelCompleted += OnLevelCompleted;
+            _gameStateNotifier.Win += OnLevelCompleted;
             _scoreNotifier.ScoreChanged += OnScoreChanged;
 
             _data = null;
@@ -39,7 +39,7 @@ namespace Arkanoid
 
         public void Dispose()
         {
-            _gameStateNotifier.LevelCompleted -= OnLevelCompleted;
+            _gameStateNotifier.Win -= OnLevelCompleted;
             _scoreNotifier.ScoreChanged -= OnScoreChanged;
 
             _data = null;

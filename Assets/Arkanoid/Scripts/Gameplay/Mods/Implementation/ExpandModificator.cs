@@ -10,16 +10,16 @@ namespace Arkanoid.Gameplay.Mods.Implementation
         public event Action<IModificator> Expired;
         public ModType Type => ModType.Expand;
 
-        private readonly IPaddleSizeController _sizeController;
+        private readonly PaddleController _paddleController;
 
-        public ExpandModificator(IPaddleSizeController sizeController)
+        public ExpandModificator(PaddleController paddleController)
         {
-            _sizeController = sizeController;
+            _paddleController = paddleController;
         }
 
         public void Apply()
         {
-            _sizeController.Increase();
+            _paddleController.IncreaseSize();
 
             Expired?.Invoke(this);
         }

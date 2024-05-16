@@ -19,11 +19,9 @@ namespace Arkanoid.Levels
         public BrickFactory(IAssetProvider assetProvider)
         {
             _assetProvider = assetProvider;
-
-            Load();
         }
 
-        private async void Load()
+        public async void Init()
         {
             List<BrickView> brickViews = await _assetProvider.LoadPrefabs<BrickView>(REFERENCE);
 

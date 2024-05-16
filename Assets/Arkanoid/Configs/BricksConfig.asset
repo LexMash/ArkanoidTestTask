@@ -9,39 +9,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: c69a3b8c70f10af4ca27e578ca63b0cb, type: 3}
   m_Name: BricksConfig
-  m_EditorClassIdentifier: Assembly-CSharp:Arkanoid.Bricks:BrickConfig
+  m_EditorClassIdentifier: 
   _datas:
   - <Type>k__BackingField: 0
     <IsDestroyable>k__BackingField: 1
-    <Score>k__BackingField: 50
+    <Score>k__BackingField: 10
     <Health>k__BackingField: 0
   - <Type>k__BackingField: 1
     <IsDestroyable>k__BackingField: 1
-    <Score>k__BackingField: 60
+    <Score>k__BackingField: 30
     <Health>k__BackingField: 0
   - <Type>k__BackingField: 2
     <IsDestroyable>k__BackingField: 1
-    <Score>k__BackingField: 70
+    <Score>k__BackingField: 50
     <Health>k__BackingField: 0
   - <Type>k__BackingField: 3
     <IsDestroyable>k__BackingField: 1
-    <Score>k__BackingField: 80
-    <Health>k__BackingField: 1
+    <Score>k__BackingField: 70
+    <Health>k__BackingField: 0
   - <Type>k__BackingField: 4
     <IsDestroyable>k__BackingField: 1
     <Score>k__BackingField: 90
-    <Health>k__BackingField: 1
-  - <Type>k__BackingField: 7
-    <IsDestroyable>k__BackingField: 1
-    <Score>k__BackingField: 100
-    <Health>k__BackingField: 3
+    <Health>k__BackingField: 2
   - <Type>k__BackingField: 5
     <IsDestroyable>k__BackingField: 1
-    <Score>k__BackingField: 120
-    <Health>k__BackingField: 5
+    <Score>k__BackingField: 110
+    <Health>k__BackingField: 3
   - <Type>k__BackingField: 6
     <IsDestroyable>k__BackingField: 0
     <Score>k__BackingField: 0
     <Health>k__BackingField: 1
+  - <Type>k__BackingField: 7
+    <IsDestroyable>k__BackingField: 0
+    <Score>k__BackingField: 200
+    <Health>k__BackingField: 5

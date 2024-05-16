@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Arkanoid.Paddle.FX.Laser;
+using UnityEngine;
 
 namespace Arkanoid.Paddle
 {
@@ -8,9 +9,10 @@ namespace Arkanoid.Paddle
         [field: SerializeField] public CollisionDetector CollisionDetector { get; private set; }
         [field: SerializeField] public Animator Animator { get; private set; }
         [field: SerializeField] public Transform BallInitialPosition { get; private set; }
+        [field: SerializeField] public LaserGun LaserGun { get; private set; }
 
         [Space]
-        [SerializeField] private Rigidbody2D _rigidbody;
+        [SerializeField] private Rigidbody2D _rigidbody;    
 
         public float Width => WidthChanger.Width;
 

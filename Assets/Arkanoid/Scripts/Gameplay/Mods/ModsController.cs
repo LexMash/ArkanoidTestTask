@@ -5,6 +5,8 @@ using Arkanoid.Paddle.FX.Configs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+using Arkanoid.Gameplay.Mods;
 
 namespace Arkanoid.Gameplay
 {
@@ -24,7 +26,26 @@ namespace Arkanoid.Gameplay
             _modificators = modificators;
             _notifier = notifier;
 
+
+            _modificators.Init();
             _notifier.PowerUPTaken += OnPowerUPTaken;
+        }
+
+        public void RemoveAllApplyedMods()
+        {
+            List<IModificator> modificators = _modMap.Values.ToList();
+
+            var count = modificators.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                IModificator mod = modificators[i];
+
+                RemoveMod(mod);
+            }
+
+            modificators.Clear();
+            _modMap.Clear();
         }
 
         public void Dispose()

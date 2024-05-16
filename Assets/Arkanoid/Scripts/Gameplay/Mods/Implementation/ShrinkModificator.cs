@@ -8,19 +8,18 @@ namespace Arkanoid.Gameplay.Mods.Implementation
     public class ShrinkModificator : IModificator
     {       
         public event Action<IModificator> Expired;
-
         public ModType Type => ModType.Shrink;
 
-        private readonly IPaddleSizeController _sizeController;
+        private readonly PaddleController _paddleController;
 
-        public ShrinkModificator(IPaddleSizeController sizeController)
+        public ShrinkModificator(PaddleController paddleController)
         {
-            _sizeController = sizeController;
+            _paddleController = paddleController;
         }
 
         public void Apply()
         {
-            _sizeController.Decrease();
+            _paddleController.DecreaseSize();
 
             Expired?.Invoke(this);
         }

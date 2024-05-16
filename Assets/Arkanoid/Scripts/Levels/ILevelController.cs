@@ -6,7 +6,8 @@ namespace Arkanoid.Levels
     {
         event Action<string> LevelLoaded;
 
-        void Load(string levelName);
+        void Init();
+        void Load(int levelIndex);
         void MakeBricksHollow();
         void MakeBricksSolid();
         void Restart();

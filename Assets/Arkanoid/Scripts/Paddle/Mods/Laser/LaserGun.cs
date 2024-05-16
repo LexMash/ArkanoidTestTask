@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Arkanoid.Paddle.FX.Laser
 {
@@ -24,6 +25,7 @@ namespace Arkanoid.Paddle.FX.Laser
         private float _counter;
         private float _fireInterval;
 
+        [Inject]
         public void Construct(PaddleConfig config, ProjectileFactory factory)
         {
             _config = config;

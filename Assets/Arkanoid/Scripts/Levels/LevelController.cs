@@ -1,5 +1,6 @@
 ﻿using Arkanoid.Bricks;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Arkanoid.Levels
@@ -18,21 +19,32 @@ namespace Arkanoid.Levels
         private readonly LevelBuilder _builder;
         private readonly BrickService _brickService;
 
+        private List<string> _levels;
+
         private Level _currentLevel;
 
         public LevelController(ILevelDataService dataService, LevelBuilder builder, BrickService brickService)
         {
             _dataService = dataService;
             _builder = builder;
-            _brickService = brickService;
+            _brickService = brickService;          
 
             _brickService.BrickHitted += BrickHitted;
             _brickService.BrickDestroyed += BrickDestroyed;
             _brickService.AllBricksRemoved += AllBricksRemoved;
         }
 
-        public async void Load(string levelName)
+        public async void Init()
         {
+            _levels = await _dataService.LoadLevelList();
+        }
+
+        public async void Load(int index)
+        {
+            index = Mathf.Clamp(index, 0, _levels.Count - 1); //залушка, что бы не падало
+
+            string levelName = _levels[index];
+
             if (_currentLevel != null)
             {
                 _builder.DestroyAllBuilded();

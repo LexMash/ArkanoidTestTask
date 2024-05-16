@@ -1,8 +1,10 @@
 ﻿using System;
+using UnityEngine;
+using Zenject;
 
 namespace Arkanoid.Gameplay
 {
-    public class Timer
+    public class Timer : ITickable
     {
         public event Action Completed;
 
@@ -17,7 +19,12 @@ namespace Arkanoid.Gameplay
 
         public void Stop() => _isCounting = false;
 
-        public void Update(float timeDelta)
+        public void Tick()
+        {
+            Count(Time.deltaTime);
+        }
+
+        private void Count(float timeDelta)
         {
             if (!_isCounting)
                 return;
@@ -31,6 +38,6 @@ namespace Arkanoid.Gameplay
             }
         }
 
-        private bool TimeOut() => _time <= 0;
+        private bool TimeOut() => _time <= 0;      
     }
 }

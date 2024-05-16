@@ -8,10 +8,9 @@ namespace Arkanoid.Paddle.FX.Laser
 
         public ProjectileFactory(IAssetProvider assetProvider) : base(assetProvider)
         {
-            LoadPrefab();
         }
 
-        protected async override void LoadPrefab()
+        public async override void Init()
         {
             _objPrefab = await _assetProvider.LoadPrefab<Projectile>(REFERENCE);
         }

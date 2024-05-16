@@ -26,5 +26,9 @@ namespace Arkanoid.Gameplay.Mods
 
             return new MockModificator(data, timer);
         }
+
+        public void Init()
+        {
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace Arkanoid.Infrastracture
             _assetProvider = assetProvider;
         }
 
-        protected abstract void LoadPrefab();
+        public abstract void Init();
 
         public TObject Create(Vector3 position)
         {

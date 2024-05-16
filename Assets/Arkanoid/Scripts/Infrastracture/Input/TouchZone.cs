@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 public class TouchZone : MonoBehaviour, IInput, IPointerClickHandler, IDragHandler, IPointerDownHandler
 {
@@ -12,14 +13,15 @@ public class TouchZone : MonoBehaviour, IInput, IPointerClickHandler, IDragHandl
 
     private Camera _camera;
 
-#if UNITY_EDITOR
-    private void Awake()
-    {
-        _camera = Camera.main;
-    }
-#endif
+//#if UNITY_EDITOR
+//    private void Awake()
+//    {
+//        _camera = Camera.main;
+//    }
+//#endif
 
-    public void Construct(Camera camera)
+    [Inject]
+    private void Construct(Camera camera)
     {
         _camera = camera;
     }

@@ -334,6 +334,7 @@ MonoBehaviour:
   <CollisionDetector>k__BackingField: {fileID: 8100764880806114169}
   <Animator>k__BackingField: {fileID: 6577018824842455338}
   <BallInitialPosition>k__BackingField: {fileID: 6355050480481664889}
+  <LaserGun>k__BackingField: {fileID: 5611422814137297041}
   _rigidbody: {fileID: 4111450485280067047}
 --- !u!114 &8100764880806114169
 MonoBehaviour:
@@ -600,3 +601,4 @@ MonoBehaviour:
   _visualRoot: {fileID: 4843428834572665226}
   _enabledPositionY: 1
   _animSpeed: 0.5
+  _ease: 0

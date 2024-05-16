@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 namespace Arkanoid.UI.LifeBar
 {
@@ -8,9 +9,10 @@ namespace Arkanoid.UI.LifeBar
     {
         [SerializeField] private List<GameObject> _liveGOs;
 
-        private ILivesNotificator _livesNotificator;
+        private ILivesNotifier _livesNotificator;
 
-        public void Contruct(ILivesNotificator livesNotificator)
+        [Inject]
+        public void Contruct(ILivesNotifier livesNotificator)
         {
             _livesNotificator = livesNotificator;
 

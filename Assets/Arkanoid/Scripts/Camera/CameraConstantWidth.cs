@@ -4,7 +4,6 @@ public class CameraConstantWidth : MonoBehaviour
 {
     [SerializeField] private Camera _targetCamera;
     [SerializeField] private Vector2 _defaultResolution = new Vector2(720, 1280);
-    [SerializeField, Range(0f, 1f)] private float _widthOrHeight = 0;
 
     private float _initialSize;
     private float _targetAspect;

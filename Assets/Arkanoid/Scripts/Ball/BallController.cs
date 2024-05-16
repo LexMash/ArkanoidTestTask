@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Arkanoid.Ball
 {
-    public class BallController : IDisposable, IBallController, IBallCollisionNotifier, IBallDestroyNotificator
+    public class BallController : IDisposable, IBallController, IBallCollisionNotifier, IBallDestroyNotifier
     {
         public event Action BallDestroed;
         public event Action BrickCollision;

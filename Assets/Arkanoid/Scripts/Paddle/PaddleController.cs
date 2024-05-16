@@ -1,4 +1,5 @@
 ﻿using Arkanoid.Input;
+using Arkanoid.Paddle.FX.Laser;
 using Arkanoid.PowerUPs;
 using System;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Arkanoid.Paddle
         private readonly IPaddleMoveController _moveController;
         private readonly IPaddleSizeController _sizeController;
         private readonly CollisionDetector _collisionDetector;
+        private readonly LaserGun _laserGun;
 
         public PaddleController(IInput input, 
             IPaddleMoveController moveController,
@@ -27,6 +29,7 @@ namespace Arkanoid.Paddle
             _input = input;
             _moveController = moveController;
             _sizeController = paddle.WidthChanger;
+            _laserGun = paddle.LaserGun;
             _collisionDetector = paddle.CollisionDetector;
 
             _input.MovePerformed += InputMovePerformed;
@@ -66,6 +69,9 @@ namespace Arkanoid.Paddle
                 Decreased?.Invoke();
             }
         }
+
+        public void GunEnable() => _laserGun.Enable();
+        public void GunDisable() => _laserGun.Disable();
 
         private void InputMovePerformed(Vector3 vector) => _moveController.SetTargetPosition(vector);
 
