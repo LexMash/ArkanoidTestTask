@@ -37,7 +37,7 @@ namespace Arkanoid.Infrastracture
             else
             {
                 obj = Intantiate(position);
-            }
+            }           
 
             obj.Released += AddToReleased;
 
@@ -69,6 +69,8 @@ namespace Arkanoid.Infrastracture
             var obj = (TObject) reusable;
 
             obj.Released -= AddToReleased;
+
+            obj.gameObject.SetActive(false);
 
             _active.Remove(obj);
             _released.Add(obj);

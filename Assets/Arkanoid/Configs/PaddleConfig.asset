@@ -17,6 +17,6 @@ MonoBehaviour:
   <MaxSize>k__BackingField: 4
   <SizeChangeStep>k__BackingField: 0.5
   <MoveSpeed>k__BackingField: 2
-  <SmoothMoveFactor>k__BackingField: 17
+  <SmoothMoveFactor>k__BackingField: 7
   <FieldWidth>k__BackingField: 5
   <BulletPerMinute>k__BackingField: 120

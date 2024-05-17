@@ -45,8 +45,7 @@ namespace Arkanoid.Bricks
             }
             else
             {
-                Released?.Invoke(this);
-                gameObject.SetActive(false);               
+                Released?.Invoke(this);            
             }     
         }
 

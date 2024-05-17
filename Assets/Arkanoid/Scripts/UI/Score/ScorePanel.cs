@@ -6,7 +6,7 @@ namespace Arkanoid.UI
 {
     public class ScorePanel : MonoBehaviour
     {
-        private const string SCORE_FORMAT = "{0:00#\\.###\\.###\\.###}";
+        private const string SCORE_FORMAT = "{0:00#\\.###\\.###}";
 
         [SerializeField] private TextMeshProUGUI _highScoreTMesh;
         [SerializeField] private TextMeshProUGUI _currentScoreTMesh;

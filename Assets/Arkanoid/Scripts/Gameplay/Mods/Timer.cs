@@ -22,17 +22,10 @@ namespace Arkanoid.Gameplay
 
         public void Tick()
         {
-            Count(Time.deltaTime);
-        }
-
-        private void Count(float timeDelta)
-        {
             if (!_isCounting)
                 return;
 
-            _time -= timeDelta;
-
-            Debug.Log(_time);
+            _time -= Time.deltaTime;
 
             if (TimeOut())
             {

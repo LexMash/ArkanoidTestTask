@@ -14,7 +14,7 @@ namespace Arkanoid.Levels
 
         private readonly IAssetProvider _assetProvider;
         private readonly Dictionary<BrickType, BrickView> _prefabMap = new();
-        private readonly Dictionary<BrickType, List<BrickView>> _released = new();
+        private readonly Dictionary<BrickType, Queue<BrickView>> _released = new();
         private readonly List<BrickView> _active = new();
 
         public BrickFactory(IAssetProvider assetProvider)
@@ -38,12 +38,13 @@ namespace Arkanoid.Levels
         {
             BrickView brick = null;
 
-            if (_released.TryGetValue(type, out List<BrickView> list))
+            if (_released.TryGetValue(type, out Queue<BrickView> queue))
             {
-                brick = list[list.Count - 1];
-                list.Remove(brick);
+                brick = queue.Dequeue();
 
-                if (list.Count == 0)
+                brick.gameObject.transform.position = position;
+
+                if(queue.Count == 0)
                     _released.Remove(type);
             }
             else
@@ -52,6 +53,8 @@ namespace Arkanoid.Levels
 
                 brick = Intantiate(prefab, position);
             }
+
+            brick.gameObject.SetActive(true);
 
             brick.Released += AddToReleased;
 
@@ -66,17 +69,21 @@ namespace Arkanoid.Levels
 
             brick.Released -= AddToReleased;
 
-            if (_released.TryGetValue(brick.Type, out List<BrickView> list))
+            _active.Remove(brick);
+
+            brick.gameObject.SetActive(false);
+
+            if (_released.TryGetValue(brick.Type, out Queue<BrickView> queue))
             {
-                list.Add(brick);
+                queue.Enqueue(brick);
             }
             else
             {
-                var newList = new List<BrickView>();
+                var newQueue = new Queue<BrickView>();
 
-                _released[brick.Type] = newList;
+                _released[brick.Type] = newQueue;
 
-                newList.Add(brick);
+                newQueue.Enqueue(brick);
             }
         }
 
@@ -89,7 +96,6 @@ namespace Arkanoid.Levels
 
             _prefabMap.Clear();
             _released.Clear();
-
             _active.Clear();
         }
 

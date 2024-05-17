@@ -5,7 +5,6 @@ using Arkanoid.Paddle.FX.Configs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Arkanoid.Gameplay

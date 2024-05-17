@@ -35,11 +35,14 @@ namespace Arkanoid.Ball
 
         public void SetInitialState()
         {
+            if (BallAlreadyExist())
+                return;
+
             BallView ball = _factory.Create();
 
-            SubscribeToBallEvents(ball);
-
             _balls.Add(ball);
+
+            SubscribeToBallEvents(ball);
 
             SetStartBallPosition();
         }
@@ -122,7 +125,9 @@ namespace Arkanoid.Ball
             _velocityMap.Clear();
         }
 
+        private bool BallAlreadyExist() => _balls.Count != 0;
         private void OnBrickCollision() => BrickCollision?.Invoke();
+        private void OnWallCollision() => WallCollision?.Invoke();       
 
         private void OnPaddleCollision(BallView ball)
         {
@@ -140,9 +145,7 @@ namespace Arkanoid.Ball
 
             ball.transform.SetParent(_initTransform.Transform);
             ball.Mover.MovementEnable(false);
-        }
-
-        private void OnWallCollision() => WallCollision?.Invoke();
+        }        
 
         private void LaunchToRandomDirection(BallView ball)
         {
@@ -167,8 +170,6 @@ namespace Arkanoid.Ball
             if (_balls.Count == 0)
             {
                 BallDestroed?.Invoke();
-
-                return;
             }
         }
 

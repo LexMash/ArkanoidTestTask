@@ -1,12 +1,11 @@
 ﻿using Arkanoid;
 using Arkanoid.Ball;
-using Arkanoid.GameField;
 using Arkanoid.Gameplay;
 using Arkanoid.Input;
 using Arkanoid.Levels;
-using Arkanoid.Paddle;
-using Arkanoid.UI;
+using Arkanoid.PowerUPs;
 using Arkanoid.UI.LifeBar;
+using DG.Tweening;
 using Infrastructure;
 using StateMachine;
 
@@ -18,9 +17,7 @@ public class GamePlayState : GameStateBase
     private readonly ILivesNotifier _livesNotificator;
     private readonly ILevelsEventNotifier _levelsEventNotifier;
     private readonly ModsController _modsController;
-    private readonly PaddleController _paddleController;
-    private readonly IScoreController _scoreController;
-    private readonly ArenaController _arenaController;
+    private readonly PowerUpSpawner _powerUpSpawner;
 
     public GamePlayState(
         StateChangeProvider stateChangeProvider,
@@ -30,9 +27,7 @@ public class GamePlayState : GameStateBase
         ILivesNotifier livesNotificator,
         ILevelsEventNotifier levelsEventNotifier,
         ModsController modsController,
-        PaddleController paddleController,
-        IScoreController scoreController,
-        ArenaController arenaController
+        PowerUpSpawner powerUpSpawner
         ) : base(stateChangeProvider)
     {
         _input = input;
@@ -41,24 +36,17 @@ public class GamePlayState : GameStateBase
         _livesNotificator = livesNotificator;
         _levelsEventNotifier = levelsEventNotifier;
         _modsController = modsController;
-        _paddleController = paddleController;
-        _scoreController = scoreController;
-        _arenaController = arenaController;
+        _powerUpSpawner = powerUpSpawner;
     }
 
     public override void Enter()
     {
         base.Enter();
 
-        _input.Enable();
-
-        _arenaController.ChangeBackground();
-
-        _ballController.SetInitialState();
-
-        _paddleController.SetInitialState();      
+        _input.Enable();        
 
         _input.ActionPerformed += OnActionPerformed;
+
         _ballController.BallDestroed += OnBallDestroed;
         _livesNotificator.NoMoreLives += OnNoMoreLives;
         _levelsEventNotifier.LevelCompleted += OnLevelCompleted;
@@ -71,7 +59,10 @@ public class GamePlayState : GameStateBase
         _input.Disable();
 
         _gameDataProvider.Save();
-        //_ballController.DestroyExtraBalls();
+
+        _ballController.DestroyExtraBalls();
+
+        _input.ActionPerformed -= OnActionPerformed;
 
         _ballController.BallDestroed -= OnBallDestroed;
         _livesNotificator.NoMoreLives -= OnNoMoreLives;
@@ -88,16 +79,29 @@ public class GamePlayState : GameStateBase
     private void OnBallDestroed()
     {
         _ballController.SetInitialState();
-        _modsController.RemoveAllApplyedMods();       
+
+        RemoveAllObjectsFromScreen();
+
+        _input.ActionPerformed += OnActionPerformed;
     }
 
     private void OnLevelCompleted()
     {
-        _stateChangeProvider.ChangeState(GameStateType.LevelLoad);
+        RemoveAllObjectsFromScreen();
+
+        DOVirtual.DelayedCall(2f, ()=> _stateChangeProvider.ChangeState(GameStateType.LevelLoad));
     }
 
     private void OnNoMoreLives()
-    {        
-        _stateChangeProvider.ChangeState(GameStateType.EndGame);
+    {
+        RemoveAllObjectsFromScreen();
+
+        _stateChangeProvider.ChangeState(GameStateType.EndGame); ;
+    }
+
+    private void RemoveAllObjectsFromScreen()
+    {
+        _modsController.RemoveAllApplyedMods();
+        _powerUpSpawner.RemoveAllSpawned();
     }
 }

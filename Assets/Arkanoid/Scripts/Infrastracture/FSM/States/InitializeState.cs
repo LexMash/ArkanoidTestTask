@@ -8,6 +8,7 @@ using Arkanoid.UI;
 using Arkanoid.UI.LifeBar;
 using Infrastructure;
 using StateMachine;
+using UnityEngine;
 
 public class InitializeState : GameStateBase
 {
@@ -48,6 +49,8 @@ public class InitializeState : GameStateBase
     public override async void Enter()
     {
         base.Enter();
+
+        Application.targetFrameRate = 60;
 
         _input.Disable();
 

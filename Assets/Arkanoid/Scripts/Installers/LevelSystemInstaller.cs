@@ -17,7 +17,7 @@ namespace Arkanoid.Installers
             Container.BindInterfacesAndSelfTo<BrickService>().AsSingle();           
             Container.BindInterfacesAndSelfTo<BrickFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<PowerUPFactory>().AsSingle();
-            Container.BindInterfacesAndSelfTo<BrickDestroyHandle>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PowerUpSpawner>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<LevelDataService>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelBuilder>().AsSingle();

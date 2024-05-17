@@ -33,21 +33,6 @@ namespace Arkanoid.Levels
             return _bricksObjects;
         }
 
-        public BrickView[] RebuildLevel()
-        {
-            for (int i = 0; i < _bricksObjects.Length; i++)
-            {
-                BrickView brick = _bricksObjects[i];
-
-                if (!brick.gameObject.activeSelf)
-                {
-                    brick.gameObject.SetActive(true);
-                }
-            }
-
-            return _bricksObjects;
-        }
-
         public void DestroyAllBuilded()
         {
             for (int i = 0; i < _bricksObjects.Length; i++)

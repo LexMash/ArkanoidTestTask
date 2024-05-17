@@ -3,12 +3,12 @@ using System;
 
 namespace Arkanoid.PowerUPs
 {
-    public class BrickDestroyHandle : IDisposable
+    public class PowerUpSpawner : IDisposable
     {
         private readonly IBrickEventNotifier _notifier;
         private readonly PowerUPFactory _factory;
 
-        public BrickDestroyHandle(IBrickEventNotifier notifier, PowerUPFactory factory)
+        public PowerUpSpawner(IBrickEventNotifier notifier, PowerUPFactory factory)
         {
             _notifier = notifier;
             _factory = factory;
@@ -16,10 +16,9 @@ namespace Arkanoid.PowerUPs
             _notifier.OnBrickDestroyed += OnBrickDestroyed;
         }
 
-        public void Dispose()
-        {
-            _notifier.OnBrickDestroyed -= OnBrickDestroyed;
-        }
+        public void RemoveAllSpawned() => _factory.RemoveAllActive();
+
+        public void Dispose() => _notifier.OnBrickDestroyed -= OnBrickDestroyed;
 
         private void OnBrickDestroyed(HitBrickData data)
         {

@@ -54,9 +54,9 @@ namespace Arkanoid.Paddle.FX.Laser
 
         public void Disable()
         {
-            _tweenDisable.Restart();
-
             _isEnabled = false;
+
+            _tweenDisable.Restart();        
         }
 
         private void Update()

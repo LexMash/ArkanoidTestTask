@@ -12,6 +12,7 @@ namespace Arkanoid.Installers
         [SerializeField] private RestartButton _restartBttn;
         [SerializeField] private LifeBarPanel _lifeBarPanel;
         [SerializeField] private TouchZone _touchZone;
+        [SerializeField] private LevelLabelPanel _levelLabel;
 
         public override void InstallBindings()
         {
@@ -19,6 +20,7 @@ namespace Arkanoid.Installers
             Container.BindInterfacesAndSelfTo<ScoreController>().AsSingle().NonLazy();
 
             Container.Bind<RestartButton>().FromInstance(_restartBttn).AsSingle();
+            Container.Bind<LevelLabelPanel>().FromInstance(_levelLabel).AsSingle();
 
             Container.Bind<LifeBarPanel>().FromInstance(_lifeBarPanel).AsSingle();
             Container.BindInterfacesAndSelfTo<LivesController>().AsSingle().NonLazy();

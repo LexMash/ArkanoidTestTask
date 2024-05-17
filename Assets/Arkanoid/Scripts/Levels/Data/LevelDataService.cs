@@ -33,17 +33,24 @@ namespace Arkanoid.Levels
             Level loadedData = null;
             string json = string.Empty;
 
-            using (UnityWebRequest www = UnityWebRequest.Get(path))
+            if (Application.platform == RuntimePlatform.Android)
             {
-                await UniTask.WaitWhile(() => www.SendWebRequest().webRequest.isDone);
-
-                if (www.result == UnityWebRequest.Result.Success)
+                using (UnityWebRequest www = UnityWebRequest.Get(path))
                 {
-                    json = www.downloadHandler.text;
+                    await UniTask.WaitWhile(() => www.SendWebRequest().webRequest.isDone);
 
-                    loadedData = _serializator.Deserialize<Level>(json);
+                    if (www.result == UnityWebRequest.Result.Success)
+                    {
+                        json = www.downloadHandler.text;
+                    }
                 }
             }
+            else
+            {
+                json = File.ReadAllText(path);
+            }
+
+            loadedData = _serializator.Deserialize<Level>(json);
 
             Loaded?.Invoke();
 
@@ -53,19 +60,28 @@ namespace Arkanoid.Levels
         public async UniTask<List<string>> LoadLevelList()
         {
             List<string> levelList = new();
+            string json = string.Empty;
 
-            using (UnityWebRequest www = UnityWebRequest.Get(_listPath))
+            if (Application.platform == RuntimePlatform.Android)
             {
-                await UniTask.WaitUntil(() => www.SendWebRequest().webRequest.isDone);
-
-                if (www.result == UnityWebRequest.Result.Success)
+                using (UnityWebRequest www = UnityWebRequest.Get(_listPath))
                 {
-                    string json = www.downloadHandler.text;
-                    string[] levels = _serializator.Deserialize<string[]>(json);
+                    await UniTask.WaitUntil(() => www.SendWebRequest().webRequest.isDone);
 
-                    levelList.AddRange(levels);
+                    if (www.result == UnityWebRequest.Result.Success)
+                    {
+                        json = www.downloadHandler.text;
+                    }
                 }
             }
+            else
+            {
+                json = File.ReadAllText(_listPath);
+            }
+
+            string[] levels = _serializator.Deserialize<string[]>(json);
+
+            levelList.AddRange(levels);
 
             Loaded?.Invoke();
 
@@ -73,6 +89,6 @@ namespace Arkanoid.Levels
         }
 
         private string BuildLevelPath(string levelName)
-            => Path.Combine(_levelsPath, levelName + EXTENSION);
+            => System.IO.Path.Combine(_levelsPath, levelName + EXTENSION);
     }
 }

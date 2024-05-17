@@ -25,8 +25,6 @@ namespace Arkanoid.Ball
         {
             Released?.Invoke(this);
             Destroyed?.Invoke(this);
-
-            gameObject.SetActive(false);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

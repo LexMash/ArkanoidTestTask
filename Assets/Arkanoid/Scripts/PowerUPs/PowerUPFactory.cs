@@ -40,7 +40,8 @@ namespace Arkanoid.PowerUPs
 
             if (_released.TryGetValue(type, out List<PowerUpView> list))
             {
-                powerUp = list[list.Count - 1];
+                powerUp = list[^1];
+
                 list.Remove(powerUp);
 
                 if (list.Count == 0)
@@ -52,31 +53,36 @@ namespace Arkanoid.PowerUPs
                 powerUp = Intantiate(prefab, position);
             }
 
-            powerUp.Released += AddToReleased;
+            powerUp.Released += OnReleased;
 
             _active.Add(powerUp);
 
             return powerUp;
         }
 
-        private void AddToReleased(IReusable reusable)
+        public void RemoveAllActive()
+        {
+            for (int i = 0; i < _active.Count; i++)
+            {
+                PowerUpView active = _active[i];
+
+                active.gameObject.SetActive(false);
+
+                AdToReleased(active);
+            }
+
+            _active.Clear();
+        }
+
+        private void OnReleased(IReusable reusable)
         {
             var powerUp = reusable as PowerUpView;
 
-            powerUp.Released -= AddToReleased;
+            powerUp.Released -= OnReleased;
 
-            if (_released.TryGetValue(powerUp.ModType, out List<PowerUpView> list))
-            {
-                list.Add(powerUp);
-            }
-            else
-            {
-                var newList = new List<PowerUpView>();
+            _active.Remove(powerUp);
 
-                _released[powerUp.ModType] = newList;
-               
-                newList.Add(powerUp);
-            }
+            AdToReleased(powerUp);
         }
 
         public void Dispose()
@@ -90,6 +96,22 @@ namespace Arkanoid.PowerUPs
             _released.Clear();
 
             _active.Clear();
+        }
+
+        private void AdToReleased(PowerUpView powerUp)
+        {
+            if (_released.TryGetValue(powerUp.ModType, out List<PowerUpView> list))
+            {
+                list.Add(powerUp);
+            }
+            else
+            {
+                var newList = new List<PowerUpView>();
+
+                _released[powerUp.ModType] = newList;
+
+                newList.Add(powerUp);
+            }
         }
 
         private static PowerUpView Intantiate(PowerUpView prefab, Vector2 position)

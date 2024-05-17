@@ -32,22 +32,14 @@ namespace Arkanoid.Input
             _targetXPosition = ClampXCoordinate(position, _paddle.Width / 2f);
         }
 
-        private void FixedUpdate()  //по моему коллизии с шариком так лучше обрабатываются, несмотря на движение через трансформ
-        {
-            if (!_isInit)
-                return;
-
-            //_paddle.Velocity = _velocity;
-        }
-
-        private void Update()
+        private void FixedUpdate()
         {
             if (!_isInit)
                 return;
 
             var targetPosition = new Vector2(_targetXPosition, _yPosition);
 
-            _paddle.CurrentPosition = Vector2.SmoothDamp(_paddle.CurrentPosition, targetPosition, ref _velocity, _smoothFactor * Time.deltaTime);          
+            _paddle.CurrentPosition = Vector2.SmoothDamp(_paddle.CurrentPosition, targetPosition, ref _velocity, _smoothFactor * Time.fixedDeltaTime);          
         }
 
         private float ClampXCoordinate(Vector3 worldPoint, float paddleHalfWidth)

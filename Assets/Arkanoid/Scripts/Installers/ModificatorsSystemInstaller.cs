@@ -23,7 +23,7 @@ namespace Arkanoid.Installers
             Container.Bind<SplitBallModificator>().AsSingle().NonLazy();
             Container.Bind<LaserGunModificator>().AsSingle().NonLazy();
 
-            Container.BindInterfacesAndSelfTo<Timer>().AsTransient();
+            Container.BindInterfacesAndSelfTo<Timer>().AsCached();
             Container.BindInterfacesAndSelfTo<ModsConfig>().FromInstance(_config).AsSingle();
         }
     }
