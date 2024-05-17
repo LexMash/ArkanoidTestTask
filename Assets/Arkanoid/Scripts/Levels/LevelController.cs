@@ -70,7 +70,9 @@ namespace Arkanoid.Levels
 
         public void Restart()
         {
-            BrickView[] buildedData = _builder.RebuildLevel();
+            _builder.DestroyAllBuilded();
+
+            BrickView[] buildedData = _builder.GetBuildedData(_currentLevel.BricksData);
 
             _brickService.Init(buildedData, _currentLevel.BricksData);
 

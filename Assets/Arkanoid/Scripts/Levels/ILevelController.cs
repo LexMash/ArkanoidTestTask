@@ -8,7 +8,7 @@ namespace Arkanoid.Levels
         event Action<string> LevelLoaded;
 
         UniTask Init();
-        void Load(int levelIndex);
+        UniTask Load(int levelIndex);
         void MakeBricksHollow();
         void MakeBricksSolid();
         void Restart();
